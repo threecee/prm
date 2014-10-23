@@ -1,7 +1,7 @@
 import WebKeys._
 
 // TODO Replace with your project's/module's name
-name := """prm"""
+name := "prm"
 
 // TODO Set your organization here; ThisBuild means it will apply to all sub-modules
 organization in ThisBuild := "prm.as"
@@ -13,18 +13,32 @@ version := "0.1-SNAPSHOT"
 //scalaVersion := "2.10.4"
 scalaVersion := "2.11.1"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file("."))
+  .enablePlugins(PlayScala)
+  .enablePlugins(SbtWeb)
+
+
+lazy val scalikejdbcVersion = "2.1.2"
+
+lazy val postgresVersion = "9.1-901-1.jdbc4"
 
 // Dependencies
 libraryDependencies ++= Seq(
-  filters,
-  cache,
+  jdbc,
+  "postgresql" % "postgresql" % "9.1-901-1.jdbc4",
+  "com.typesafe.play" %% "anorm" % "2.3.3",
+ // ws,
+  //"org.scalaj" % "scalaj-time" % "0.7",
+  "joda-time"         % "joda-time"           % "2.2",
+  "org.joda" % "joda-convert" % "1.2",
   // WebJars (i.e. client-side) dependencies
   "org.webjars" % "requirejs" % "2.1.14-1",
   "org.webjars" % "underscorejs" % "1.6.0-3",
   "org.webjars" % "jquery" % "1.11.1",
   "org.webjars" % "bootstrap" % "3.1.1-2" exclude("org.webjars", "jquery"),
-  "org.webjars" % "angularjs" % "1.2.18" exclude("org.webjars", "jquery")
+  "org.webjars" % "angularjs" % "1.2.18" exclude("org.webjars", "jquery"),
+    filters,
+  cache
 )
 
 // Scala Compiler Options
@@ -75,4 +89,4 @@ RjsKeys.paths += ("jsRoutes" -> ("/jsroutes" -> "empty:"))
 // JshintKeys.config := ".jshintrc"
 
 // All work and no play...
-emojiLogs
+//emojiLogs

@@ -1,11 +1,14 @@
 // Comment to get more information during initialization
 logLevel := Level.Warn
 
-// The Typesafe repository
-resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
+resolvers ++= Seq(
+  "sonatype releases" at "http://oss.sonatype.org/content/repositories/releases",
+  "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+)
+
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.3")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.4")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-jshint" % "1.0.1")
 

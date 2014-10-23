@@ -1,14 +1,16 @@
-package controllers
+package controllers.classification
 
+import models.classification.EquipmentState
 import play.api.libs.json._
 import play.api.mvc._
-
-import models.{EquipmentState, User}
 
 object EquipmentStates extends Controller  {
 
 
-  def equipmentState(id: Long) = Action(parse.json){ implicit request =>
+  def equipmentStates() = Action(parse.empty){ implicit request =>
+    Ok(Json.toJson(EquipmentState.findAll))
+  }
+  def equipmentState(id: Long) = Action(parse.empty){ implicit request =>
      Ok(Json.toJson(EquipmentState.find(id)))
   }
 
@@ -20,8 +22,13 @@ object EquipmentStates extends Controller  {
       if(id.isDefined) {
         Created(Json.toJson(EquipmentState.find(id.get)))
       }
+      else {
+        BadRequest(request.body)
+      }
     }
-    BadRequest(request.body)
+    else {
+      BadRequest(request.body)
+    }
   }
 
   def updateEquipmentState(id: Long) = Action(parse.json) { implicit request =>
@@ -31,7 +38,9 @@ object EquipmentStates extends Controller  {
       EquipmentState.update(state.get)
       Accepted(Json.toJson(state.get))
     }
-    BadRequest(request.body)
+    else {
+      BadRequest(request.body)
+    }
   }
 
   def deleteEquipmentState(id: Long) = Action(parse.empty) { implicit request =>
@@ -39,9 +48,11 @@ object EquipmentStates extends Controller  {
     if(state.isDefined)
     {
       EquipmentState.delete(id)
-      Gone(Json.toJson(id))
+      Ok(Json.toJson(id))
     }
-    BadRequest(Json.toJson(id))
+    else {
+      BadRequest(Json.toJson(id))
+    }
   }
 
 }

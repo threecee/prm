@@ -4,7 +4,7 @@
 define(['angular', './controllers', 'common'], function(angular, controllers) {
   'use strict';
 
-  var mod = angular.module('user.routes', ['user.services', 'yourprefix.common']);
+  var mod = angular.module('user.routes', ['user.services', 'prm.common']);
   mod.config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/login', {templateUrl:'/assets/javascripts/user/login.html', controller:controllers.LoginCtrl});

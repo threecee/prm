@@ -1,5 +1,4 @@
-package models
-
+package models.classification
 
 import java.util.concurrent.Executors
 
@@ -45,20 +44,16 @@ object EquipmentState {
     }
   }
 
-
-
   def findAll(): Seq[EquipmentState] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table).as(EquipmentState.simple *)
     }
   }
 
-
   def find(id: Long): Option[EquipmentState] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "id" -> id).as(EquipmentState.simple.singleOpt)
     }
-
   }
 
   def add(eq:EquipmentState): Option[Long] = {
@@ -84,7 +79,6 @@ object EquipmentState {
         }
     }
   }
-
 
   def delete(id:Long): Unit = {
     DB.withTransaction {

@@ -5,5 +5,5 @@
 define(['angular', './routes', './services'], function(angular) {
   'use strict';
 
-  return angular.module('yourprefix.user', ['ngCookies', 'ngRoute', 'user.routes', 'user.services']);
+  return angular.module('prm.user', ['ngCookies', 'ngRoute', 'user.routes', 'user.services']);
 });

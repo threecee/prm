@@ -34,7 +34,7 @@ object dbMapper {
     val idKey:String = idTuple._1
     val idValue:Any = idTuple._2
 
-    SQL(s"""delete from ${table} where $idKey = ({$idValue})""").on(dbMapper.mapTuple(idTuple))
+    SQL(s"""delete from $table where $idKey = ($idValue)""").on(dbMapper.mapTuple(idTuple))
   }
 
   def makeInsertStatement(table:String, tuples:Seq[(String, Any)]):SimpleSql[Row] = {
@@ -43,7 +43,7 @@ object dbMapper {
     val listNames:String = definedTuples.map(tuple => tuple._1).mkString(", ")
     val listValues:String = definedTuples.map(tuple => "{" + tuple._1 + "}").mkString(", ")
 
-    SQL(s"""insert into ${table}(${listNames}) values(${listValues})""").on(dbMapper.mapQuery(tuples):_*)
+    SQL(s"""insert into $table ($listNames) values($listValues)""").on(dbMapper.mapQuery(tuples):_*)
   }
 
   def filterTuples(tuples: Seq[(String, Any)]): Seq[(String, Any)] = {
@@ -56,17 +56,17 @@ object dbMapper {
     val listUpdates:String = definedTuples.map(tuple => tuple._1 + " =  ({" + tuple._1 + "})").mkString(", ")
     val idKey:String = idTuple._1
 
-    SQL(s"""update ${table} set ${listUpdates} where $idKey = ({$idKey})""").on(dbMapper.mapQuery(merge(idTuple, tuples)):_* )
+    SQL(s"""update $table set $listUpdates where $idKey = ($idKey)""").on(dbMapper.mapQuery(merge(idTuple, tuples)):_* )
   }
   def makeSelectStatement(table:String, idTuple:(String, Any)):SimpleSql[Row] = {
     val idKey:String = idTuple._1
     val idValue:Any = idTuple._2
 
-    SQL(s"""select * from ${table} where $idKey = ({$idValue})""").on(dbMapper.mapTuple(idTuple))
+    SQL(s"""select * from $table where $idKey = ($idValue)""").on(dbMapper.mapTuple(idTuple))
   }
 
   def makeSelectStatement(table:String):SimpleSql[Row] = {
-    SQL(s"""select * from ${table}""")
+    SQL(s"""select * from $table""")
   }
 
   def merge(idTuple:(String, Any), tuples:Seq[(String, Any)]):Seq[(String, Any)] = {

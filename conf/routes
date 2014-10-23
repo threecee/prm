@@ -22,6 +22,29 @@ PUT     /users/:id              controllers.Users.updateUser(id: Long)
 DELETE  /users/:id              controllers.Users.deleteUser(id: Long)
 GET     /authuser               controllers.Users.authUser()
 
+
+# EquipmentStates
+GET     /classification/equipmentstates                  controllers.classification.EquipmentStates.equipmentStates()
+GET     /classification/equipmentstates/:id              controllers.classification.EquipmentStates.equipmentState(id: Long)
+POST    /classification/equipmentstates                  controllers.classification.EquipmentStates.createEquipmentState()
+PUT     /classification/equipmentstates/:id              controllers.classification.EquipmentStates.updateEquipmentState(id: Long)
+DELETE  /classification/equipmentstates/:id              controllers.classification.EquipmentStates.deleteEquipmentState(id: Long)
+
+# ComponentTypes
+GET     /classification/componenttypes                  controllers.classification.ComponentTypes.componentTypes()
+GET     /classification/componenttypes/:id              controllers.classification.ComponentTypes.componentType(id: Long)
+POST    /classification/componenttypes                  controllers.classification.ComponentTypes.createComponentType()
+PUT     /classification/componenttypes/:id              controllers.classification.ComponentTypes.updateComponentType(id: Long)
+DELETE  /classification/componenttypes/:id              controllers.classification.ComponentTypes.deleteComponentType(id: Long)
+
+# IncidentTypes
+GET     /classification/incidenttypes                  controllers.classification.IncidentTypes.incidentTypes()
+GET     /classification/incidenttypes/:id              controllers.classification.IncidentTypes.incidentType(id: Long)
+POST    /classification/incidenttypes                  controllers.classification.IncidentTypes.createIncidentType()
+PUT     /classification/incidenttypes/:id              controllers.classification.IncidentTypes.updateIncidentType(id: Long)
+DELETE  /classification/incidenttypes/:id              controllers.classification.IncidentTypes.deleteIncidentType(id: Long)
+
+
 # Static
 # ~~~~
 

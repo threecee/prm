@@ -4,7 +4,7 @@
 define(['angular', './controllers', 'common'], function(angular, controllers) {
   'use strict';
 
-  var mod = angular.module('dashboard.routes', ['yourprefix.common']);
+  var mod = angular.module('dashboard.routes', ['prm.common']);
   mod.config(['$routeProvider', 'userResolve', function($routeProvider, userResolve) {
     $routeProvider
       .when('/dashboard',  {templateUrl: '/assets/javascripts/dashboard/dashboard.html',  controller:controllers.DashboardCtrl, resolve:userResolve});

@@ -1,0 +1,10 @@
+<div class="page-header"><h1>Create new Equipment State</h1></div>
+<form name="form">
+  <fieldset>
+    <div class="form-group">
+      <label for="val">Value</label>
+      <input id="val" type="number" class="form-control" data-ng-model="equipmentstate.value" placeholder="Value" required /><br />
+       <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createEquipmentState(equipmentstate)">Create</button>
+    </div>
+  </fieldset>
+</form>

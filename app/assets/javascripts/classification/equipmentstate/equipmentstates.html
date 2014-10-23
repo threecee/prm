@@ -1,0 +1,17 @@
+<div class="page-header"><h1>Equipment States</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Value</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="equipmentState in equipmentStates">
+        <td>{{equipmentState.value}}</td>
+        <td><button class="btn btn-warning"  data-ng-click="delete(equipmentState, $index)">Delete</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

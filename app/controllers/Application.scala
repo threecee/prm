@@ -37,7 +37,7 @@ object Application extends Controller with Security {
    * Uses browser caching; set duration (in seconds) according to your release cycle.
    * @param varName The name of the global variable, defaults to `jsRoutes`
    */
-  def jsRoutes(varName: String = "jsRoutes") = Cached(_ => "jsRoutes", duration = 86400) {
+  def jsRoutes(varName: String = "jsRoutes") = Cached(_ => "jsRoutes", duration = 1) {
     Action { implicit request =>
       Ok(Routes.javascriptRouter(varName)(routeCache: _*)).as(JAVASCRIPT)
     }

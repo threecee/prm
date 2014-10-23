@@ -1,0 +1,17 @@
+<div class="page-header"><h1>Component Type</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="componentType in componentTypes">
+        <td>{{componentType.name}}</td>
+        <td><button class="btn btn-warning"  data-ng-click="delete(componentType, $index)">Delete</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

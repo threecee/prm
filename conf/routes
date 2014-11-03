@@ -3,47 +3,53 @@
 # ~~~~
 
 # Home page
-GET     /                       controllers.Application.index
+GET           /                   controllers.Application.index
 
 # JavaScript routes object
-GET     /jsroutes.js            controllers.Application.jsRoutes()
+GET           /jsroutes.js        controllers.Application.jsRoutes()
 
 # Routes used by Angular
 # ~~~~
 
 # Authentication
-POST    /login                  controllers.Application.login()
-POST    /logout                 controllers.Application.logout()
+POST          /login              controllers.Application.login()
+POST          /logout             controllers.Application.logout()
 
 # Users
-GET     /users/:id              controllers.Users.user(id: Long)
-POST    /users                  controllers.Users.createUser()
-PUT     /users/:id              controllers.Users.updateUser(id: Long)
-DELETE  /users/:id              controllers.Users.deleteUser(id: Long)
-GET     /authuser               controllers.Users.authUser()
-
+GET           /users/:id          controllers.Users.user(id: Long)
+POST          /users              controllers.Users.createUser()
+PUT           /users/:id          controllers.Users.updateUser(id: Long)
+DELETE        /users/:id          controllers.Users.deleteUser(id: Long)
+GET           /authuser           controllers.Users.authUser()
 
 # EquipmentStates
-GET     /classification/equipmentstates                  controllers.classification.EquipmentStates.equipmentStates()
-GET     /classification/equipmentstates/:id              controllers.classification.EquipmentStates.equipmentState(id: Long)
-POST    /classification/equipmentstates                  controllers.classification.EquipmentStates.createEquipmentState()
-PUT     /classification/equipmentstates/:id              controllers.classification.EquipmentStates.updateEquipmentState(id: Long)
-DELETE  /classification/equipmentstates/:id              controllers.classification.EquipmentStates.deleteEquipmentState(id: Long)
+GET     /classification/equipmentstates                  controllers.EquipmentStates.equipmentStates()
+GET     /classification/equipmentstates/:id              controllers.EquipmentStates.equipmentState(id: Long)
+POST    /classification/equipmentstates                  controllers.EquipmentStates.createEquipmentState()
+PUT     /classification/equipmentstates/:id              controllers.EquipmentStates.updateEquipmentState(id: Long)
+DELETE  /classification/equipmentstates/:id              controllers.EquipmentStates.deleteEquipmentState(id: Long)
 
 # ComponentTypes
-GET     /classification/componenttypes                  controllers.classification.ComponentTypes.componentTypes()
-GET     /classification/componenttypes/:id              controllers.classification.ComponentTypes.componentType(id: Long)
-POST    /classification/componenttypes                  controllers.classification.ComponentTypes.createComponentType()
-PUT     /classification/componenttypes/:id              controllers.classification.ComponentTypes.updateComponentType(id: Long)
-DELETE  /classification/componenttypes/:id              controllers.classification.ComponentTypes.deleteComponentType(id: Long)
+GET     /classification/componenttypes                  controllers.ComponentTypes.componentTypes()
+GET     /classification/componenttypes/:id              controllers.ComponentTypes.componentType(id: Long)
+POST    /classification/componenttypes                  controllers.ComponentTypes.createComponentType()
+PUT     /classification/componenttypes/:id              controllers.ComponentTypes.updateComponentType(id: Long)
+DELETE  /classification/componenttypes/:id              controllers.ComponentTypes.deleteComponentType(id: Long)
 
 # IncidentTypes
-GET     /classification/incidenttypes                  controllers.classification.IncidentTypes.incidentTypes()
-GET     /classification/incidenttypes/:id              controllers.classification.IncidentTypes.incidentType(id: Long)
-POST    /classification/incidenttypes                  controllers.classification.IncidentTypes.createIncidentType()
-PUT     /classification/incidenttypes/:id              controllers.classification.IncidentTypes.updateIncidentType(id: Long)
-DELETE  /classification/incidenttypes/:id              controllers.classification.IncidentTypes.deleteIncidentType(id: Long)
+GET     /classification/incidenttypes                  controllers.IncidentTypes.incidentTypes()
+GET     /classification/incidenttypes/:id              controllers.IncidentTypes.incidentType(id: Long)
+POST    /classification/incidenttypes                  controllers.IncidentTypes.createIncidentType()
+PUT     /classification/incidenttypes/:id              controllers.IncidentTypes.updateIncidentType(id: Long)
+DELETE  /classification/incidenttypes/:id              controllers.IncidentTypes.deleteIncidentType(id: Long)
 
+# ResidualLifeSpans
+GET     /classification/residuallifespans                  controllers.ResidualLifeSpans.residualLifeSpans()
+GET     /classification/residuallifespans/:id              controllers.ResidualLifeSpans.residualLifeSpan(id: Long)
+POST    /classification/residuallifespans                  controllers.ResidualLifeSpans.createResidualLifeSpan(componentId:Long)
+POST    /classification/residuallifespansByVal               controllers.ResidualLifeSpans.createResidualLifeSpanByValues(componentId:Long, equipmentStateId:Long, span:Double)
+PUT     /classification/residuallifespans/:id              controllers.ResidualLifeSpans.updateResidualLifeSpan(id: Long)
+DELETE  /classification/residuallifespans/:id              controllers.ResidualLifeSpans.deleteResidualLifeSpan(id: Long)
 
 # Static
 # ~~~~

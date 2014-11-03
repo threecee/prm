@@ -1,4 +1,4 @@
-package controllers.classification
+package controllers
 
 import models.classification.IncidentType
 import play.api.libs.json._

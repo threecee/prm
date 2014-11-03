@@ -1,0 +1,7 @@
+    <div class="form-group">
+        <label for="val">State</label>
+       <div>{{residualLifeSpan.equipmentState}}</div>
+      <label for="val">Span</label>
+      <input id="val" type="number" class="form-control" data-ng-model="residualLifeSpan.span" placeholder="span" required /><br />
+       <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="updateResidualLifeSpan(residualLifeSpan)">Update</button>
+    </div>

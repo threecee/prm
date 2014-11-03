@@ -24,6 +24,8 @@ object Application extends Controller with Security {
    */
   val routeCache = {
     val jsRoutesClass = classOf[routes.javascript]
+    val listvals = jsRoutesClass.getFields
+    listvals.map(value =>{Logger.debug("route:" + value.getName)})
     val controllers = jsRoutesClass.getFields.map(_.get(null))
     controllers.flatMap { controller =>
       controller.getClass.getDeclaredMethods.map { action =>

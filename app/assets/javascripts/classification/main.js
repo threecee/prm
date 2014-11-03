@@ -5,13 +5,15 @@
 define(['angular',
     './componenttype/routes', './componenttype/services',
     './equipmentstate/routes', './equipmentstate/services',
-    './incidenttype/routes', './incidenttype/services'
+    './incidenttype/routes', './incidenttype/services',
+    './residuallifespan/routes', './residuallifespan/services', './residuallifespan/edit_directive'
 ], function(angular) {
   'use strict';
 
   return angular.module('prm.classification', ['ngCookies', 'ngRoute',
       'componenttype.routes', 'componenttype.services',
       'equipmentstate.routes', 'equipmentstate.services',
-      'incidenttype.routes', 'incidenttype.services'
+      'incidenttype.routes', 'incidenttype.services',
+      'residuallifespan.routes', 'residuallifespan.services', 'residuallifespan.edit'
   ]);
 });

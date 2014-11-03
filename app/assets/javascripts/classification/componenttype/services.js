@@ -6,28 +6,28 @@ define(['angular', 'common'], function (angular) {
 
     return {
         componentTypes: function () {
-            return playRoutes.controllers.classification.ComponentTypes.componentTypes().get().then(function (response) {
+            return playRoutes.controllers.ComponentTypes.componentTypes().get().then(function (response) {
                 return response.data;
             });
         },
         componentType: function (id) {
-        return playRoutes.controllers.classification.ComponentTypes.componentType(id).get().then(function (response) {
+        return playRoutes.controllers.ComponentTypes.componentType(id).get().then(function (response) {
           return response.data;
         });
       },
       createComponentType: function (data) {
-        return playRoutes.controllers.classification.ComponentTypes.createComponentType().post(data).then(function (response) {
+        return playRoutes.controllers.ComponentTypes.createComponentType().post(data).then(function (response) {
           $log.info("Created new componenttype");
             return response.data;
         });
       },
       updateComponentType: function (data) {
-            return playRoutes.controllers.classification.ComponentTypes.updateComponentType().post(data).then(function () {
+            return playRoutes.controllers.ComponentTypes.updateComponentType().post(data).then(function () {
                 $log.info("Update componenttype");
             });
         },
        deleteComponentType: function (id) {
-            return playRoutes.controllers.classification.ComponentTypes.deleteComponentType(id).delete().then(function () {
+            return playRoutes.controllers.ComponentTypes.deleteComponentType(id).delete().then(function () {
                 $log.info("deleted componenttype");
             });
         }

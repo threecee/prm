@@ -1,0 +1,41 @@
+<div class="page-header"><h1>Component Type</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="componentType in componentTypes">
+        <td>{{componentType.name}}</td>
+        <td><button class="btn btn-warning"  data-ng-click="delete(componentType, $index)">Delete</button>
+        </td>
+    </tr>
+
+    </tbody>
+
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>State</th>
+            <th>Component</th>
+            <th>Span</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="residualLifeSpan in residualLifeSpans">
+            <td>{{residualLifeSpan.equipmentState.value}}</td>
+            <td>{{residualLifeSpan.componentType.name}}</td>
+            <td>{{residualLifeSpan.span}}</td>
+            <td><button class="btn btn-warning"  data-ng-click="delete(residualLifeSpan, $index)">Delete</button>
+        </tr>
+
+        </tbody>
+    </table>
+
+
+
+</table>

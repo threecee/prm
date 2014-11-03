@@ -39,6 +39,11 @@ define([], function() {
                 $scope.equipmentStates.splice(index,1);
             });
         };
+        $scope.update = function(equipmentState) {
+            equipmentstateService.updateEquipmentState(equipmentState.id).then(function() {
+
+            });
+        };
 
 
     };

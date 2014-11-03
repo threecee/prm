@@ -6,28 +6,28 @@ define(['angular', 'common'], function (angular) {
 
     return {
         incidentTypes: function () {
-            return playRoutes.controllers.classification.IncidentTypes.incidentTypes().get().then(function (response) {
+            return playRoutes.controllers.IncidentTypes.incidentTypes().get().then(function (response) {
                 return response.data;
             });
         },
         incidentType: function (id) {
-        return playRoutes.controllers.classification.IncidentTypes.incidentType(id).get().then(function (response) {
+        return playRoutes.controllers.IncidentTypes.incidentType(id).get().then(function (response) {
           return response.data;
         });
       },
       createIncidentType: function (data) {
-        return playRoutes.controllers.classification.IncidentTypes.createIncidentType().post(data).then(function (response) {
+        return playRoutes.controllers.IncidentTypes.createIncidentType().post(data).then(function (response) {
           $log.info("Created new incidenttype");
             return response.data;
         });
       },
       updateIncidentType: function (data) {
-            return playRoutes.controllers.classification.IncidentTypes.updateIncidentType().post(data).then(function () {
+            return playRoutes.controllers.IncidentTypes.updateIncidentType().post(data).then(function () {
                 $log.info("Update incidenttype");
             });
         },
        deleteIncidentType: function (id) {
-            return playRoutes.controllers.classification.IncidentTypes.deleteIncidentType(id).delete().then(function () {
+            return playRoutes.controllers.IncidentTypes.deleteIncidentType(id).delete().then(function () {
                 $log.info("deleted incidenttype");
             });
         }

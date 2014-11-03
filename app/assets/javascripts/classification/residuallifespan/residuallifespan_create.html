@@ -1,0 +1,19 @@
+<div class="page-header"><h1>Create new Residual Life Span</h1></div>
+<form name="form">
+  <fieldset>
+    <div class="form-group">
+        <label for="val">State</label>
+        <select  class="form-control"  ng-model="residualLifeSpan.equipmentState" ng-options="equipmentState.value for equipmentState in equipmentStates">
+            <option value="">-- choose state --</option>
+        </select>
+        <label for="val">Component Type</label>
+        <select  class="form-control"  ng-model="residualLifeSpan.componentType" ng-options="componentType.name for componentType in componentTypes">
+            <option value="">-- choose state --</option>
+        </select>
+
+      <label for="val">span</label>
+      <input id="val" type="number" class="form-control" data-ng-model="residualLifeSpan.span" placeholder="span" required /><br />
+       <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createResidualLifeSpan(residualLifeSpan)">Create</button>
+    </div>
+  </fieldset>
+</form>

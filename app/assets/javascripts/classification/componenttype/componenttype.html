@@ -1,4 +1,28 @@
-<div class="page-header"><h1>Component Type</h1></div>
+<div class="page-header"><h1>{{ componentType.name }}</h1></div>
 
-        <h2>Value</h2><div>{{ componentType.name }}</div>
-</form>
+        <h3>Residual life spans for {{ componentType.name }} by equipment state</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>State</th>
+        <th>Span</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="equipmentState in equipmentStates" >
+        <td>{{equipmentState.value}}</td>
+        <td> <span ng-hide="editable">{{equipmentState.residuallifespan.span || 'Not defined'}}</span>
+        <input ng-show="editable && equipmentState.residuallifespan !== null" type="number" ng-model="equipmentState.residuallifespan.span">
+        <input ng-show="editable && equipmentState.residuallifespan === null" type="number" ng-model="newspan">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateResidualLifeSpan(newspan, equipmentState)">Update</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

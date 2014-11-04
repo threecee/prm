@@ -8,10 +8,10 @@
     </thead>
     <tbody>
     <tr ng-repeat="componentType in componentTypes">
-        <td>{{componentType.name}}</td>
-        <td><button class="btn btn-warning"  data-ng-click="delete(componentType, $index)">Delete</button>
+        <td><a href="#/componenttypes/{{componentType.id}}">{{componentType.name}}</a></td>
         </td>
     </tr>
 
     </tbody>
 </table>
+<a class="btn btn-primary" href="#/componenttype_create">Add new component type</a>

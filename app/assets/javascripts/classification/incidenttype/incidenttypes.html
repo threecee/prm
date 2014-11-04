@@ -1,4 +1,4 @@
-<div class="page-header"><h1>Component Type</h1></div>
+<div class="page-header"><h1>Incident Type</h1></div>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -7,11 +7,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="componentType in componentTypes">
-        <td>{{componentType.name}}</td>
-        <td><button class="btn btn-warning"  data-ng-click="delete(componentType, $index)">Delete</button>
+    <tr ng-repeat="incidentType in incidentTypes">
+        <td><a href="#/incidenttypes/{{incidentType.id}}">{{incidentType.name}}</a></td>
         </td>
     </tr>
 
     </tbody>
 </table>
+<a class="btn btn-primary" href="#/incidenttype_create">Add new incident type</a>

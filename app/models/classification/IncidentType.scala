@@ -72,6 +72,10 @@ object IncidentType {
     }
   }
 
+  def add(name:String, description:String): Option[Long] = {
+    add(IncidentType(None, name, description))
+  }
+
   def update(eq:IncidentType): Unit = {
     DB.withTransaction {
       implicit connection =>

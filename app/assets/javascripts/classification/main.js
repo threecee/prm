@@ -6,7 +6,8 @@ define(['angular',
     './componenttype/routes', './componenttype/services',
     './equipmentstate/routes', './equipmentstate/services',
     './incidenttype/routes', './incidenttype/services',
-    './residuallifespan/routes', './residuallifespan/services', './residuallifespan/edit_directive'
+    './residuallifespan/routes', './residuallifespan/services', './residuallifespan/edit_directive',
+    './repairs/services'
 ], function(angular) {
   'use strict';
 
@@ -14,6 +15,7 @@ define(['angular',
       'componenttype.routes', 'componenttype.services',
       'equipmentstate.routes', 'equipmentstate.services',
       'incidenttype.routes', 'incidenttype.services',
-      'residuallifespan.routes', 'residuallifespan.services', 'residuallifespan.edit'
+      'residuallifespan.routes', 'residuallifespan.services', 'residuallifespan.edit',
+      'repair.services'
   ]);
 });

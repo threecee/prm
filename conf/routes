@@ -40,6 +40,7 @@ DELETE  /classification/componenttypes/:id              controllers.ComponentTyp
 GET     /classification/incidenttypes                  controllers.IncidentTypes.incidentTypes()
 GET     /classification/incidenttypes/:id              controllers.IncidentTypes.incidentType(id: Long)
 POST    /classification/incidenttypes                  controllers.IncidentTypes.createIncidentType()
+POST    /classification/incidenttypesByVal                  controllers.IncidentTypes.createIncidentTypeByValues(name:String, description:String)
 PUT     /classification/incidenttypes/:id              controllers.IncidentTypes.updateIncidentType(id: Long)
 DELETE  /classification/incidenttypes/:id              controllers.IncidentTypes.deleteIncidentType(id: Long)
 
@@ -47,9 +48,17 @@ DELETE  /classification/incidenttypes/:id              controllers.IncidentTypes
 GET     /classification/residuallifespans                  controllers.ResidualLifeSpans.residualLifeSpans()
 GET     /classification/residuallifespans/:id              controllers.ResidualLifeSpans.residualLifeSpan(id: Long)
 POST    /classification/residuallifespans                  controllers.ResidualLifeSpans.createResidualLifeSpan(componentId:Long)
-POST    /classification/residuallifespansByVal               controllers.ResidualLifeSpans.createResidualLifeSpanByValues(componentId:Long, equipmentStateId:Long, span:Double)
+POST    /classification/residuallifespansByVal             controllers.ResidualLifeSpans.createResidualLifeSpanByValues(componentId:Long, equipmentStateId:Long, span:Double)
 PUT     /classification/residuallifespans/:id              controllers.ResidualLifeSpans.updateResidualLifeSpan(id: Long)
 DELETE  /classification/residuallifespans/:id              controllers.ResidualLifeSpans.deleteResidualLifeSpan(id: Long)
+
+# Repairs
+GET     /classification/repairs                  controllers.Repairs.repairs()
+GET     /classification/repairs/:id              controllers.Repairs.repair(id: Long)
+POST    /classification/repairs                  controllers.Repairs.createRepair(componentId:Long)
+POST    /classification/repairsByVal             controllers.Repairs.createRepairByValues(componentId:Long, incidentId:Long, span:Double, cost:Double, probability:Double)
+PUT     /classification/repairs/:id              controllers.Repairs.updateRepair(id: Long)
+DELETE  /classification/repairs/:id              controllers.Repairs.deleteRepair(id: Long)
 
 # Static
 # ~~~~

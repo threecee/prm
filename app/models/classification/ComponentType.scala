@@ -4,6 +4,7 @@ import java.util.concurrent.Executors
 
 import anorm.SqlParser._
 import anorm._
+import controllers.Repairs
 import play.api.Play.current
 import play.api.db.DB
 import utils.dbMapper
@@ -14,7 +15,8 @@ import scala.concurrent.ExecutionContext
 case class ComponentType(
                            id: Option[Long],
                            name: String,
-                           residuallifespans:Seq[ResidualLifeSpan]
+                           residuallifespans:Seq[ResidualLifeSpan],
+                           repairs:Seq[Repair]
                            )
 
 object ComponentType {
@@ -26,36 +28,21 @@ object ComponentType {
   implicit val ComponentTypeFromJson: Reads[ComponentType] = (
     (__ \ "id").readNullable[Long] ~
     (__ \ "name").read[String] ~
-    (__ \ "residuallifespans").read[Seq[ResidualLifeSpan]]
+    (__ \ "residuallifespans").read[Seq[ResidualLifeSpan]] ~
+      (__ \ "repairs").read[Seq[Repair]]
     )(ComponentType.apply _)
 
   implicit val ComponentTypeToJson: Writes[ComponentType] = (
     (__ \ "id").writeNullable[Long] ~
       (__ \ "name").write[String]~
-      (__ \ "residuallifespans").write[Seq[ResidualLifeSpan]]
+      (__ \ "residuallifespans").write[Seq[ResidualLifeSpan]] ~
+        (__ \ "repairs").write[Seq[Repair]]
     )((componentType: ComponentType) => (
     componentType.id,
     componentType.name,
-      componentType.residuallifespans
+      componentType.residuallifespans,
+    componentType.repairs
     ))
-     /*
-  implicit val ResidualLifeSpanFromJson: Reads[ResidualLifeSpan] = (
-    (__ \ "id").readNullable[Long] ~
-      (__ \ "span").read[Double] ~
-      (__ \ "equipmentState").read[EquipmentState]
-    )(ResidualLifeSpan.apply _)
-
-  implicit val ResidualLifeSpanToJson: Writes[ResidualLifeSpan] = (
-    (__ \ "id").writeNullable[Long] ~
-      (__ \ "span").write[Double] ~
-      (__ \ "equipmentState").write[EquipmentState]
-    )((residualLifeSpan: ResidualLifeSpan) => (
-    residualLifeSpan.id,
-    residualLifeSpan.span,
-    residualLifeSpan.equipmentState
-    )) */
-
-
 
 
   val executorService = Executors.newFixedThreadPool(4)
@@ -63,7 +50,7 @@ object ComponentType {
 
   val simple = {
     get[Option[Long]]("id") ~
-      get[String]("name") map { case id ~ name => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get))
+      get[String]("name") map { case id ~ name => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get), Repair.findWithComponentType(id.get))
     }
   }
 

@@ -26,3 +26,39 @@
 
     </tbody>
 </table>
+
+
+<h3>Repairs scenarios for {{ componentType.name }} by incident type</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Incident type</th>
+        <th>Span</th>
+        <th>Cost</th>
+        <th>Probability</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="incidentType in incidentTypes" >
+        <td>{{incidentType.name}}</td>
+        <td> <span ng-hide="editable">{{incidentType.repair.span || 'Not defined'}}</span>
+            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.span">
+            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.span">
+        </td>
+        <td> <span ng-hide="editable">{{incidentType.repair.cost || 'Not defined'}}</span>
+            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.cost">
+            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.cost">
+        </td>
+        <td> <span ng-hide="editable">{{incidentType.repair.probability || 'Not defined'}}</span>
+            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.probability">
+            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.probability">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateRepair(newobject, incidentType)">Update</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

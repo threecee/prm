@@ -18,12 +18,13 @@ define(['./componenttype_edit_directive'], function () {
     };
     CreateComponentTypeCtrl.$inject = ['$scope', '$location', 'componenttypeService'];
 
-    var ShowComponentTypeCtrl = function ($scope, $routeParams, $q, $location, componenttypeService, $log, equipmentstateService, residuallifespanService) {
+    var ShowComponentTypeCtrl = function ($scope, $routeParams, $q, $location, componenttypeService, $log, equipmentstateService, residuallifespanService, incidenttypeService, repairService) {
         var deferred = $q.defer();
         var promise = deferred.promise;
 
         $scope.componentType = {};
         $scope.equipmentStates = {};
+        $scope.incidentTypes = {};
 
 
 
@@ -40,6 +41,7 @@ define(['./componenttype_edit_directive'], function () {
                 });
             });
         };
+
 
         $scope.getComponentType = function () {
             componenttypeService.componentType($routeParams.id).then(function (eq) {
@@ -91,19 +93,74 @@ define(['./componenttype_edit_directive'], function () {
             }
             return false;
         };
+        $scope.updateRepair = function (newobject, incidentType) {
+            if (incidentType.repair !== null) {
+                repairService.updateRepair($scope.componentType.id, incidentType.repair);
+            }
+            else {
+                repairService.createRepairByValues($scope.componentType.id, incidentType.id, newobject.span, newobject.cost, newobject.probability).then(function (newrepair) {
+                    $scope.componentType.repairs.push(newrepair);
+                    incidentType.repair = newrepair;
+                });
+            }
+            return false;
+        };
 
-        $scope.getComponentType();
+
+        $scope.getRepair = function (incidentType) {
+            var index = $scope.getResidualLifeSpanIndex(incidentType);
+            if (index !== null) {
+                $log.debug("found repair for incidentType " + incidentType.value + ": " + $scope.componentType.repairs[index].span);
+                return $scope.componentType.repairs[index];
+            }
+            return null;
+        };
+
+        $scope.getRepairIndex = function (incidentType) {
+            for (var i = 0; i < $scope.componentType.repairs.length; i++) {
+                if ($scope.componentType.repairs[i].incidentType.value === incidentType.value) {
+                    return i;
+                }
+            }
+            return null;
+
+        };
+
+
+
+        $scope.getIncidentTypes = function () {
+            incidenttypeService.incidentTypes().then(function (it) {
+                $scope.incidentTypes = it;
+                promise.then(function () {
+                    $log.debug("Promise trigget");
+                    for (var i = 0; i < $scope.incidentTypes.length; i++) {
+                        $scope.incidentTypes[i].repair = $scope.getRepair($scope.incidentTypes[i]);
+                        if ($scope.incidentTypes[i].repair !== null) {
+                            $log.debug("value for incidenttype " + $scope.incidentTypes[i].value + ": " + $scope.incidentTypes[i].repair.span);
+                        }
+                    }
+                });
+            });
+        };
+
+
+
         $scope.getEquipmentStates();
-
+        $scope.getIncidentTypes();
+        $scope.getComponentType();
 
     };
-    ShowComponentTypeCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'componenttypeService', '$log', 'equipmentstateService', 'residuallifespanService'];
+    ShowComponentTypeCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'componenttypeService', '$log', 'equipmentstateService', 'residuallifespanService', 'incidenttypeService', 'repairService'];
 
     var ShowComponentTypesCtrl = function ($scope, $location, componenttypeService) {
         $scope.componentTypes = {};
         componenttypeService.componentTypes().then(function (eq) {
             $scope.componentTypes = eq;
         });
+
+        $scope.createComponentType = function () {
+            $location.path('/componenttypes_create');
+        };
 
 
         $scope.show = function (componentType) {

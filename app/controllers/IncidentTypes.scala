@@ -31,6 +31,16 @@ object IncidentTypes extends Controller  {
     }
   }
 
+  def createIncidentTypeByValues(name:String, description:String) = Action(parse.empty) { implicit request =>
+      val id = IncidentType.add(name, description)
+      if(id.isDefined) {
+        Created(Json.toJson(IncidentType.find(id.get)))
+      }
+      else {
+        BadRequest(Json.toJson(name))
+      }
+    }
+
   def updateIncidentType(id: Long) = Action(parse.json) { implicit request =>
     val state = request.body.validate[IncidentType]
     if(state.isSuccess)

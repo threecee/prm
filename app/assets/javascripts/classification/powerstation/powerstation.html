@@ -1,0 +1,31 @@
+<div class="page-header"><h1>{{ powerStation.name }}</h1></div>
+
+        <h3>Power Units</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>name</th>
+        <th>Span</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="powerUnit in powerStation.powerUnits" >
+        <td>{{powerUnit.name}}</td>
+        <td> <span ng-hide="editable">{{equipmentState.residuallifespan.span || 'Not defined'}}</span>
+        <input ng-show="editable && equipmentState.residuallifespan !== null" type="number" ng-model="equipmentState.residuallifespan.span">
+        <input ng-show="editable && equipmentState.residuallifespan === null" type="number" ng-model="newspan">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateResidualLifeSpan(newspan, equipmentState)">Update</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+
+<button class="btn btn-primary" data-ng-click="createPowerUnit()">Add new power unit</button>

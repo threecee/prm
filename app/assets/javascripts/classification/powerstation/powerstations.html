@@ -1,0 +1,17 @@
+<div class="page-header"><h1>Power Stations</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="powerStation in powerStations">
+        <td><a href="#/powerstations/{{powerStation.id}}">{{powerStation.name}}</a></td>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+<a class="btn btn-primary" href="#/powerstation_create">Add new power station</a>

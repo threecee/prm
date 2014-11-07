@@ -1,0 +1,10 @@
+<div class="page-header"><h1>Create new Power Station</h1></div>
+<form name="form">
+  <fieldset>
+    <div class="form-group">
+      <label for="val">Name</label>
+      <input id="val" type="text" class="form-control" data-ng-model="powerStation.name" placeholder="Name" required /><br />
+       <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createPowerStation(powerStation)">Create</button>
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,17 @@
+<div class="page-header"><h1>Power Units</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="powerUnit in powerUnits">
+        <td><a href="#/powerunits/{{powerUnit.id}}">{{powerUnit.id}}</a></td>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+<a class="btn btn-primary" href="#/powerunit_create">Add new power unit</a>

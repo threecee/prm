@@ -60,6 +60,36 @@ POST    /classification/repairsByVal             controllers.Repairs.createRepai
 PUT     /classification/repairs/:id              controllers.Repairs.updateRepair(id: Long)
 DELETE  /classification/repairs/:id              controllers.Repairs.deleteRepair(id: Long)
 
+# DowntimeCosts
+GET     /classification/downtimecosts                  controllers.DowntimeCosts.downtimecosts()
+GET     /classification/downtimecosts/:id              controllers.DowntimeCosts.downtimecost(id: Long)
+POST    /classification/downtimecosts                  controllers.DowntimeCosts.createDowntimeCost(powerUnitId:Long)
+PUT     /classification/downtimecosts/:id              controllers.DowntimeCosts.updateDowntimeCost(id: Long)
+DELETE  /classification/downtimecosts/:id              controllers.DowntimeCosts.deleteDowntimeCost(id: Long)
+
+# Components
+GET     /classification/components                  controllers.Components.components()
+GET     /classification/components/:id              controllers.Components.component(id: Long)
+POST    /classification/components                  controllers.Components.createComponent(powerUnitId:Long)
+PUT     /classification/components/:id              controllers.Components.updateComponent(id: Long)
+DELETE  /classification/components/:id              controllers.Components.deleteComponent(id: Long)
+
+# PowerUnits
+GET     /classification/powerunits                  controllers.PowerUnits.powerUnits()
+GET     /classification/powerunits/:id              controllers.PowerUnits.powerUnit(id: Long)
+POST    /classification/powerunits                  controllers.PowerUnits.createPowerUnit(powerStationId:Long)
+PUT     /classification/powerunits/:id              controllers.PowerUnits.updatePowerUnit(id: Long)
+DELETE  /classification/powerunits/:id              controllers.PowerUnits.deletePowerUnit(id: Long)
+
+# PowerStations
+GET     /classification/powerstations                  controllers.PowerStations.powerStations()
+GET     /classification/powerstations/:id              controllers.PowerStations.powerStation(id: Long)
+POST    /classification/powerstations                  controllers.PowerStations.createPowerStation()
+PUT     /classification/powerstations/:id              controllers.PowerStations.updatePowerStation(id: Long)
+DELETE  /classification/powerstations/:id              controllers.PowerStations.deletePowerStation(id: Long)
+
+
+
 # Static
 # ~~~~
 

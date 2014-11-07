@@ -7,7 +7,11 @@ define(['angular',
     './equipmentstate/routes', './equipmentstate/services',
     './incidenttype/routes', './incidenttype/services',
     './residuallifespan/routes', './residuallifespan/services', './residuallifespan/edit_directive',
-    './repairs/services'
+    './repairs/services',
+    './downtimecost/services',
+    './powerunit/routes', './powerunit/services',
+    './powerstation/routes', './powerstation/services'
+
 ], function(angular) {
   'use strict';
 
@@ -16,6 +20,9 @@ define(['angular',
       'equipmentstate.routes', 'equipmentstate.services',
       'incidenttype.routes', 'incidenttype.services',
       'residuallifespan.routes', 'residuallifespan.services', 'residuallifespan.edit',
-      'repair.services'
+      'repair.services',
+      'downtimecost.services',
+      'powerunit.routes', 'powerunit.services',
+      'powerstation.routes', 'powerstation.services'
   ]);
 });

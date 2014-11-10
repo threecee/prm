@@ -10,7 +10,8 @@ define(['angular',
     './repairs/services',
     './downtimecost/services',
     './powerunit/routes', './powerunit/services',
-    './powerstation/routes', './powerstation/services'
+    './powerstation/routes', './powerstation/services',
+    './component/services'
 
 ], function(angular) {
   'use strict';
@@ -23,6 +24,7 @@ define(['angular',
       'repair.services',
       'downtimecost.services',
       'powerunit.routes', 'powerunit.services',
-      'powerstation.routes', 'powerstation.services'
+      'powerstation.routes', 'powerstation.services',
+      'component.services'
   ]);
 });

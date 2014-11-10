@@ -2,7 +2,7 @@ define(['angular', 'common'], function (angular) {
   'use strict';
 
   var mod = angular.module('componenttype.services', ['prm.common', 'ngCookies']);
-  mod.factory('componenttypeService', ['$http', '$q', 'playRoutes', '$cookies', '$log', function ($http, $q, playRoutes, $cookies, $log) {
+  mod.factory('componentTypeService', ['$http', '$q', 'playRoutes', '$cookies', '$log', function ($http, $q, playRoutes, $cookies, $log) {
 
     return {
         componentTypes: function () {

@@ -1,10 +1,11 @@
 package controllers
 
+import controllers.base.BaseController
 import models.classification.Repair
 import play.api.libs.json._
 import play.api.mvc._
 
-object Repairs extends Controller  {
+object Repairs extends BaseController  {
 
 
   def repairs() = Action(parse.empty){ implicit request =>
@@ -27,6 +28,7 @@ object Repairs extends Controller  {
       }
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }
@@ -51,6 +53,7 @@ object Repairs extends Controller  {
       Accepted(Json.toJson(state.get))
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

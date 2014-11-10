@@ -1,11 +1,11 @@
 package controllers
 
+import controllers.base.BaseController
 import models.classification.PowerStation
-import play.api.Logger
 import play.api.libs.json._
 import play.api.mvc._
 
-object PowerStations extends Controller  {
+object PowerStations extends BaseController  {
 
 
   def powerStations() = Action(parse.empty){ implicit request =>
@@ -33,9 +33,6 @@ object PowerStations extends Controller  {
     }
   }
 
-  def prettyPrintError(state: JsResult[PowerStation]) {
-    Logger.debug(state.recoverTotal(e => JsError.toFlatJson(e)).toString)
-  }
 
   def createPowerStationByValues(name:String) = Action(parse.empty) { implicit request =>
       val id = PowerStation.add(name)

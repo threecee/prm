@@ -1,6 +1,6 @@
-<div class="page-header"><h1>{{ powerUnit.name }}</h1></div>
+<div class="page-header"><h1>{{ powerUnit.referenceId || powerUnit.id }}</h1></div>
 
-        <h3>Components for {{ powerUnit.name }}</h3>
+        <h3>Components</h3>
 
 <table class="table table-striped">
     <thead>
@@ -28,7 +28,7 @@
 </table>
 
 
-<h3>Repairs scenarios for {{ powerUnit.name }} by incident type</h3>
+<h3>Repairs scenarios by incident type</h3>
 
 <table class="table table-striped">
     <thead>

@@ -1,24 +1,24 @@
 define(['./componenttype_edit_directive'], function () {
     'use strict';
 
-    var CreateComponentTypeCtrl = function ($scope, $location, componenttypeService) {
+    var CreateComponentTypeCtrl = function ($scope, $location, componentTypeService) {
 
         $scope.createComponentType = function (componentType) {
-            componenttypeService.createComponentType(componentType).then(function (eq) {
+            componentTypeService.createComponentType(componentType).then(function (eq) {
                 $location.path('/componenttypes/' + eq.id);
             });
         };
 
         $scope.getComponentType = function (id) {
-            componenttypeService.componentType(id).then(function (eq) {
+            componentTypeService.componentType(id).then(function (eq) {
                 return eq;
             });
         };
 
     };
-    CreateComponentTypeCtrl.$inject = ['$scope', '$location', 'componenttypeService'];
+    CreateComponentTypeCtrl.$inject = ['$scope', '$location', 'componentTypeService'];
 
-    var ShowComponentTypeCtrl = function ($scope, $routeParams, $q, $location, componenttypeService, $log, equipmentstateService, residuallifespanService, incidenttypeService, repairService) {
+    var ShowComponentTypeCtrl = function ($scope, $routeParams, $q, $location, componentTypeService, $log, equipmentstateService, residuallifespanService, incidenttypeService, repairService) {
         var deferred = $q.defer();
         var promise = deferred.promise;
 
@@ -44,7 +44,7 @@ define(['./componenttype_edit_directive'], function () {
 
 
         $scope.getComponentType = function () {
-            componenttypeService.componentType($routeParams.id).then(function (eq) {
+            componentTypeService.componentType($routeParams.id).then(function (eq) {
                 $scope.componentType = eq;
                 deferred.resolve();
                 $log.debug("ComponentType value: " + $scope.componentType.name);
@@ -72,12 +72,12 @@ define(['./componenttype_edit_directive'], function () {
 
 
         $scope.delete = function (componentType, index) {
-            componenttypeService.deleteComponentType(componentType.id).then(function () {
+            componentTypeService.deleteComponentType(componentType.id).then(function () {
                 $scope.componentTypes.splice(index, 1);
             });
         };
         $scope.update = function (componentType) {
-            componenttypeService.updateComponentType(componentType.id).then(function () {
+            componentTypeService.updateComponentType(componentType.id).then(function () {
             });
         };
 
@@ -150,11 +150,11 @@ define(['./componenttype_edit_directive'], function () {
         $scope.getComponentType();
 
     };
-    ShowComponentTypeCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'componenttypeService', '$log', 'equipmentstateService', 'residuallifespanService', 'incidenttypeService', 'repairService'];
+    ShowComponentTypeCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'componentTypeService', '$log', 'equipmentstateService', 'residuallifespanService', 'incidenttypeService', 'repairService'];
 
-    var ShowComponentTypesCtrl = function ($scope, $location, componenttypeService) {
+    var ShowComponentTypesCtrl = function ($scope, $location, componentTypeService) {
         $scope.componentTypes = {};
-        componenttypeService.componentTypes().then(function (eq) {
+        componentTypeService.componentTypes().then(function (eq) {
             $scope.componentTypes = eq;
         });
 
@@ -164,14 +164,14 @@ define(['./componenttype_edit_directive'], function () {
 
 
         $scope.show = function (componentType) {
-            componenttypeService.componentType(componentType.id).then(function (eq) {
+            componentTypeService.componentType(componentType.id).then(function (eq) {
                 $location.path('/componenttypes/' + eq.id);
             });
         };
 
 
     };
-    ShowComponentTypesCtrl.$inject = ['$scope', '$location', 'componenttypeService'];
+    ShowComponentTypesCtrl.$inject = ['$scope', '$location', 'componentTypeService'];
 
 
     return {

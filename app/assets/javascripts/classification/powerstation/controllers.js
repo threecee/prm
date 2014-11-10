@@ -33,6 +33,8 @@ define([], function () {
 
 
         $scope.createPowerUnit = function (powerUnit) {
+            powerUnit.components = [];
+            powerUnit.downtimeCosts = [];
             powerUnitService.createPowerUnit($scope.powerStation.id, powerUnit).then(function (eq) {
                 $scope.powerStation.powerUnits.push(eq);
             });
@@ -40,7 +42,7 @@ define([], function () {
 
 
     };
-    ShowPowerStationCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'powerStationService', '$log', 'equipmentstateService', 'residuallifespanService', 'incidenttypeService', 'repairService'];
+    ShowPowerStationCtrl.$inject = ['$scope', '$routeParams', '$q', '$location', 'powerStationService', '$log', 'powerUnitService'];
 
     var ShowPowerStationsCtrl = function ($scope, $location, powerStationService) {
         $scope.powerStations = {};

@@ -1,10 +1,11 @@
 package controllers
 
+import controllers.base.BaseController
 import models.classification.IncidentType
 import play.api.libs.json._
 import play.api.mvc._
 
-object IncidentTypes extends Controller  {
+object IncidentTypes extends BaseController  {
 
 
   def incidentTypes() = Action(parse.empty){ implicit request =>
@@ -27,6 +28,7 @@ object IncidentTypes extends Controller  {
       }
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }
@@ -49,6 +51,7 @@ object IncidentTypes extends Controller  {
       Accepted(Json.toJson(state.get))
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

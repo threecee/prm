@@ -1,10 +1,11 @@
 package controllers
 
-import models.classification.{DowntimeCost}
+import controllers.base.BaseController
+import models.classification.DowntimeCost
 import play.api.libs.json._
 import play.api.mvc._
 
-object DowntimeCosts extends Controller  {
+object DowntimeCosts extends BaseController  {
 
 
   def downtimecosts() = Action(parse.empty){ implicit request =>
@@ -39,6 +40,7 @@ object DowntimeCosts extends Controller  {
       Accepted(Json.toJson(state.get))
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

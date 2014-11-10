@@ -1,10 +1,11 @@
 package controllers
 
+import controllers.base.BaseController
 import models.classification.ResidualLifeSpan
 import play.api.libs.json._
 import play.api.mvc._
 
-object ResidualLifeSpans extends Controller  {
+object ResidualLifeSpans extends BaseController  {
 
 
   def residualLifeSpans() = Action(parse.empty){ implicit request =>
@@ -27,6 +28,7 @@ object ResidualLifeSpans extends Controller  {
       }
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }
@@ -51,6 +53,7 @@ object ResidualLifeSpans extends Controller  {
       Accepted(Json.toJson(state.get))
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

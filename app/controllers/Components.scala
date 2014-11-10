@@ -1,10 +1,11 @@
 package controllers
 
+import controllers.base.BaseController
 import models.classification.Component
 import play.api.libs.json._
 import play.api.mvc._
 
-object Components extends Controller  {
+object Components extends BaseController  {
 
 
   def components() = Action(parse.empty){ implicit request =>
@@ -27,6 +28,7 @@ object Components extends Controller  {
       }
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }
@@ -39,6 +41,7 @@ object Components extends Controller  {
       Accepted(Json.toJson(state.get))
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

@@ -1,13 +1,13 @@
 define([], function() {
     'use strict';
 
-    var CreateResidualLifeSpanCtrl = function($scope, $location, residuallifespanService, componenttypeService, equipmentstateService) {
+    var CreateResidualLifeSpanCtrl = function($scope, $location, residuallifespanService, componentTypeService, equipmentstateService) {
         $scope.componentTypes = {};
         $scope.equipmentStates = {};
         equipmentstateService.equipmentStates().then(function(eq) {
             $scope.equipmentStates = eq;
         });
-        componenttypeService.componentTypes().then(function(eq) {
+        componentTypeService.componentTypes().then(function(eq) {
             $scope.componentTypes = eq;
         });
 
@@ -24,7 +24,7 @@ define([], function() {
         };
 
     };
-    CreateResidualLifeSpanCtrl.$inject = ['$scope', '$location', 'residuallifespanService', 'componenttypeService', 'equipmentstateService'];
+    CreateResidualLifeSpanCtrl.$inject = ['$scope', '$location', 'residuallifespanService', 'componentTypeService', 'equipmentstateService'];
 
     var ShowResidualLifeSpanCtrl = function($scope, $routeParams, $location, residuallifespanService, $log) {
         $scope.residualLifeSpan = {};

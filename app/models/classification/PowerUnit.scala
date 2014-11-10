@@ -26,14 +26,14 @@ object PowerUnit {
 
   implicit val PowerUnitFromJson: Reads[PowerUnit] = (
     (__ \ "id").readNullable[Long] ~
-      (__ \ "referenceid").readNullable[String] ~
+      (__ \ "referenceId").readNullable[String] ~
       (__ \ "downtimeCosts").read[Seq[DowntimeCost]]  ~
         (__ \ "components").read[Seq[Component]]
     )(PowerUnit.apply _)
 
   implicit val PowerUnitToJson: Writes[PowerUnit] = (
     (__ \ "id").writeNullable[Long] ~
-      (__ \ "referenceid").writeNullable[String]~
+      (__ \ "referenceId").writeNullable[String]~
       (__ \ "downtimeCosts").write[Seq[DowntimeCost]]  ~
       (__ \ "components").write[Seq[Component]]
 

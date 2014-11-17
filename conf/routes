@@ -31,6 +31,8 @@ DELETE  /classification/equipmentstates/:id              controllers.EquipmentSt
 
 # ComponentTypes
 GET     /classification/componenttypes                  controllers.ComponentTypes.componentTypes()
+GET     /classification/componenttypesforpowerstations                  controllers.ComponentTypes.componentTypesForPowerStations()
+GET     /classification/componenttypesforpowerunits                  controllers.ComponentTypes.componentTypesForPowerUnits()
 GET     /classification/componenttypes/:id              controllers.ComponentTypes.componentType(id: Long)
 POST    /classification/componenttypes                  controllers.ComponentTypes.createComponentType()
 PUT     /classification/componenttypes/:id              controllers.ComponentTypes.updateComponentType(id: Long)
@@ -70,8 +72,10 @@ DELETE  /classification/downtimecosts/:id              controllers.DowntimeCosts
 # Components
 GET     /classification/components                  controllers.Components.components()
 GET     /classification/components/:id              controllers.Components.component(id: Long)
-POST    /classification/components                  controllers.Components.createComponent(powerUnitId:Long)
-PUT     /classification/components/:id              controllers.Components.updateComponent(id: Long)
+POST    /classification/componentsForPowerStation                  controllers.Components.createComponentForPowerStation(powerStationId:Long)
+PUT     /classification/componentsForPowerStation/:id              controllers.Components.updateComponentForPowerStation(id: Long)
+POST    /classification/componentsForPowerUnit                  controllers.Components.createComponentForPowerUnit(powerUnitId:Long)
+PUT     /classification/componentsForPowerUnit/:id              controllers.Components.updateComponentForPowerUnit(id: Long)
 DELETE  /classification/components/:id              controllers.Components.deleteComponent(id: Long)
 
 # PowerUnits

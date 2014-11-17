@@ -19,6 +19,7 @@ case class DowntimeCost(
 
 object DowntimeCost {
 
+
   private val table: String = "downtimecosts"
 
   import play.api.libs.functional.syntax._
@@ -70,6 +71,11 @@ object DowntimeCost {
   def findByPowerUnit(id: Long): Seq[DowntimeCost] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "powerunit" -> id).as(DowntimeCost.simple *)
+    }
+  }
+  def findWithPowerStation(id: Long): Seq[DowntimeCost] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "powerstation" -> id).as(DowntimeCost.simple *)
     }
   }
 

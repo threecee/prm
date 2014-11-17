@@ -13,7 +13,9 @@ import scala.concurrent.ExecutionContext
 case class PowerStation(
                          id: Option[Long],
                          name: String,
-                         powerUnits:Seq[PowerUnit]
+                         powerUnits:Seq[PowerUnit],
+                         downtimeCosts:Seq[DowntimeCost],
+                         components:Seq[Component]
                          )
 
 object PowerStation {
@@ -25,17 +27,23 @@ object PowerStation {
   implicit val PowerStationFromJson: Reads[PowerStation] = (
     (__ \ "id").readNullable[Long] ~
       (__ \ "name").read[String] ~
-        (__ \ "powerUnits").read[Seq[PowerUnit]]
+        (__ \ "powerUnits").read[Seq[PowerUnit]]  ~
+      (__ \ "downtimeCosts").read[Seq[DowntimeCost]]  ~
+      (__ \ "components").read[Seq[Component]]
     )(PowerStation.apply _)
 
   implicit val PowerStationToJson: Writes[PowerStation] = (
     (__ \ "id").writeNullable[Long] ~
       (__ \ "name").write[String] ~
-      (__ \ "powerUnits").write[Seq[PowerUnit]]
+      (__ \ "powerUnits").write[Seq[PowerUnit]] ~
+      (__ \ "downtimeCosts").write[Seq[DowntimeCost]]  ~
+      (__ \ "components").write[Seq[Component]]
     )((powerStation: PowerStation) => (
     powerStation.id,
     powerStation.name,
-    powerStation.powerUnits
+    powerStation.powerUnits,
+    powerStation.downtimeCosts,
+    powerStation.components
     ))
 
 
@@ -44,7 +52,7 @@ object PowerStation {
 
   val simple = {
     get[Option[Long]]("id") ~
-      get[String]("name") map { case id ~ name  => PowerStation(id, name, PowerUnit.findWithPowerStation(id.get))
+      get[String]("name") map { case id ~ name  => PowerStation(id, name, PowerUnit.findWithPowerStation(id.get), DowntimeCost.findWithPowerStation(id.get), Component.findWithPowerStation(id.get))
     }
   }
 
@@ -72,7 +80,7 @@ object PowerStation {
   }
 
   def add(name:String): Option[Long] = {
-    add(PowerStation(None, name, Seq.empty))
+    add(PowerStation(None, name, Seq.empty, Seq.empty, Seq.empty))
   }
 
   def update(eq:PowerStation): Unit = {

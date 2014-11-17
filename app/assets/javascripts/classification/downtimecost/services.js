@@ -15,14 +15,14 @@ define(['angular', 'common'], function (angular) {
           return response.data;
         });
       },
-      createDowntimeCost: function (data) {
-        return playRoutes.controllers.DowntimeCosts.createDowntimeCost().post(data).then(function (response) {
+      createDowntimeCost: function (powerUnitId, data) {
+        return playRoutes.controllers.DowntimeCosts.createDowntimeCost(powerUnitId).post(data).then(function (response) {
           $log.info("Created new downtimecost");
             return response.data;
         });
       },
-      updateDowntimeCost: function (data) {
-            return playRoutes.controllers.DowntimeCosts.updateDowntimeCost().post(data).then(function () {
+      updateDowntimeCost: function (powerUnitId, data) {
+            return playRoutes.controllers.DowntimeCosts.updateDowntimeCost(powerUnitId).post(data).then(function () {
                 $log.info("Update downtimecost");
             });
         },

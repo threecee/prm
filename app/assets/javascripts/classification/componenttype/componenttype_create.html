@@ -4,7 +4,9 @@
     <div class="form-group">
       <label for="val">Name</label>
       <input id="val" type="text" class="form-control" data-ng-model="componentType.name" placeholder="Name" required /><br />
-       <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createComponentType(componentType)">Create</button>
+      <label for="typeof">Part of Power Station</label>
+      <input id="typeof" type="checkbox" class="form-control" data-ng-model="componentType.partOfPowerStation"   /><br />
+      <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createComponentType(componentType)">Create</button>
     </div>
   </fieldset>
 </form>

@@ -28,37 +28,77 @@
 </table>
 
 
-<h3>Repairs scenarios by incident type</h3>
+<h3>Costs of planned downtime</h3>
 
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Incident type</th>
         <th>Span</th>
         <th>Cost</th>
-        <th>Probability</th>
     </tr>
     </thead>
-    <tbody>
-    <tr ng-repeat="incidentType in incidentTypes" >
-        <td>{{incidentType.name}}</td>
-        <td> <span ng-hide="editable">{{incidentType.repair.span || 'Not defined'}}</span>
-            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.span">
-            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.span">
+    <tbody ng-init="plannedDowntime.planned = true">
+    <tr  ng-repeat="downtimeCost in powerUnit.downtimeCosts | filter:plannedDowntime " >
+        <td> <span ng-hide="editable">{{downtimeCost.span || '--'}}</span>
+            <input ng-show="editable" type="number" ng-model="downtimeCost.span">
         </td>
-        <td> <span ng-hide="editable">{{incidentType.repair.cost || 'Not defined'}}</span>
-            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.cost">
-            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.cost">
-        </td>
-        <td> <span ng-hide="editable">{{incidentType.repair.probability || 'Not defined'}}</span>
-            <input ng-show="editable && incidentType.repair !== null" type="number" ng-model="incidentType.repair.probability">
-            <input ng-show="editable && incidentType.repair === null" type="number" ng-model="newobject.probability">
+        <td> <span ng-hide="editable">{{downtimeCost.cost || '--'}}</span>
+            <input ng-show="editable" type="number" ng-model="downtimeCost.cost">
         </td>
         <td>
             <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
-            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateRepair(newobject, incidentType)">Update</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateDowntimeCost(downtimeCost)">Update</button>
         </td>
     </tr>
 
     </tbody>
 </table>
+
+<button class="btn btn-primary" data-ng-click="addnewp = true" ng-hide="addnewp" >Add</button>
+<div ng-show="addnewp" class="form-group">
+    <label for="span">Span</label>
+    <input id="span" type="number" ng-model="downtimeCost.span" required /><br />
+    <label for="cost">Cost</label>
+    <input id="cost" type="number" ng-model="downtimeCost.cost" required /><br />
+    <input id="p1" type="hidden" ng-model="downtimeCost.planned" value="true" />
+    <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createDowntimeCost(downtimeCost, true); addnewp=false">Create</button>
+</div>
+
+
+
+<h3>Costs of unplanned downtime</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Span</th>
+        <th>Cost</th>
+    </tr>
+    </thead>
+    <tbody ng-init="unplannedDowntime.planned = false">
+    <tr  ng-repeat="downtimeCost in powerUnit.downtimeCosts | filter:unplannedDowntime " >
+        <td> <span ng-hide="editable">{{downtimeCost.span || '--'}}</span>
+            <input ng-show="editable" type="number" ng-model="downtimeCost.span">
+        </td>
+        <td> <span ng-hide="editable">{{downtimeCost.cost || '--'}}</span>
+            <input ng-show="editable" type="number" ng-model="downtimeCost.cost">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateDowntimeCost(downtimeCost)">Update</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<button class="btn btn-primary" data-ng-click="addnewu = true" ng-hide="addnewu" >Add</button>
+<div ng-show="addnewu" class="form-group">
+    <label for="span2">Span</label>
+    <input id="span2" type="number" ng-model="downtimeCost.span" required /><br />
+    <label for="cost2">Cost</label>
+    <input id="cost2" type="number" ng-model="downtimeCost.cost" required /><br />
+    <input id="p2" type="hidden" ng-model="downtimeCost.planned" value="false" />
+
+    <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createDowntimeCost(downtimeCost, false); addnewu=false">Create</button>
+</div>

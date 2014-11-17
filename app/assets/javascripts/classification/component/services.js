@@ -15,14 +15,35 @@ define(['angular', 'common'], function (angular) {
           return response.data;
         });
       },
-      createComponent: function (data) {
-        return playRoutes.controllers.Components.createComponent().post(data).then(function (response) {
+      createComponentForPowerStation: function (id, data) {
+        return playRoutes.controllers.Components.createComponentForPowerStation(id).post(data).then(function (response) {
           $log.info("Created new component");
             return response.data;
         });
       },
-      updateComponent: function (data) {
-            return playRoutes.controllers.Components.updateComponent().post(data).then(function () {
+        createComponentForPowerUnit: function (id, data) {
+            return playRoutes.controllers.Components.createComponent(id).post(data).then(function (response) {
+                $log.info("Created new component");
+                return response.data;
+            });
+        },
+        updateComponentForPowerStation: function (id, data) {
+            return playRoutes.controllers.Components.updateComponentForPowerStation(id).post(data).then(function () {
+                $log.info("Update component");
+            });
+        },
+        updateComponentForPowerUnit: function (id, data) {
+            return playRoutes.controllers.Components.updateComponentForPowerUnit(id).post(data).then(function () {
+                $log.info("Update component");
+            });
+        },
+        updateComponentForPowerStationByValues: function (idStation, idType, data) {
+            return playRoutes.controllers.Components.updateComponentForPowerStation(idStation, idType).post(data).then(function () {
+                $log.info("Update component");
+            });
+        },
+        updateComponentForPowerUnitByValues: function (idUnit, idType, data) {
+            return playRoutes.controllers.Components.updateComponentForPowerUnit(idUnit, idType).post(data).then(function () {
                 $log.info("Update component");
             });
         },

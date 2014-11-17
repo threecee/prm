@@ -16,7 +16,8 @@ case class ComponentType(
                            id: Option[Long],
                            name: String,
                            residuallifespans:Seq[ResidualLifeSpan],
-                           repairs:Seq[Repair]
+                           repairs:Seq[Repair],
+partOfPowerStation:Boolean
                            )
 
 object ComponentType {
@@ -29,19 +30,22 @@ object ComponentType {
     (__ \ "id").readNullable[Long] ~
     (__ \ "name").read[String] ~
     (__ \ "residuallifespans").read[Seq[ResidualLifeSpan]] ~
-      (__ \ "repairs").read[Seq[Repair]]
+      (__ \ "repairs").read[Seq[Repair]] ~
+      (__ \ "partOfPowerStation").read[Boolean]
     )(ComponentType.apply _)
 
   implicit val ComponentTypeToJson: Writes[ComponentType] = (
     (__ \ "id").writeNullable[Long] ~
       (__ \ "name").write[String]~
       (__ \ "residuallifespans").write[Seq[ResidualLifeSpan]] ~
-        (__ \ "repairs").write[Seq[Repair]]
+        (__ \ "repairs").write[Seq[Repair]]  ~
+      (__ \ "partOfPowerStation").write[Boolean]
     )((componentType: ComponentType) => (
     componentType.id,
     componentType.name,
       componentType.residuallifespans,
-    componentType.repairs
+    componentType.repairs,
+    componentType.partOfPowerStation
     ))
 
 
@@ -50,7 +54,8 @@ object ComponentType {
 
   val simple = {
     get[Option[Long]]("id") ~
-      get[String]("name") map { case id ~ name => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get), Repair.findWithComponentType(id.get))
+      get[String]("name") ~
+      get[Boolean]("part_of_power_station") map { case id ~ name ~ part_of_power_station => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get), Repair.findWithComponentType(id.get), part_of_power_station)
     }
   }
 
@@ -69,7 +74,7 @@ object ComponentType {
   def add(eq:ComponentType): Option[Long] = {
     DB.withTransaction {
       implicit connection =>
-        dbMapper.makeInsertStatement(table, dbMapper.mapValues("name" -> eq.name))
+        dbMapper.makeInsertStatement(table, dbMapper.mapValues("name" -> eq.name, "part_of_power_station" -> eq.partOfPowerStation))
           .executeInsert() match {
           case Some(long) => Some(long.asInstanceOf[Long])
           case None       => None
@@ -81,7 +86,7 @@ object ComponentType {
     DB.withTransaction {
       implicit connection =>
         if(find(eq.id.getOrElse(-1)).isDefined){
-          dbMapper.makeUpdateStatement(table, "id" -> eq.id, dbMapper.mapValues("name" -> eq.name))
+          dbMapper.makeUpdateStatement(table, "id" -> eq.id, dbMapper.mapValues("name" -> eq.name, "part_of_power_station" -> eq.partOfPowerStation))
             .executeUpdate()
         }
         else{

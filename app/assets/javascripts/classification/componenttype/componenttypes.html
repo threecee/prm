@@ -3,12 +3,14 @@
     <thead>
     <tr>
         <th>Name</th>
-        <th></th>
+        <th>Part of</th>
     </tr>
     </thead>
     <tbody>
     <tr ng-repeat="componentType in componentTypes">
         <td><a href="#/componenttypes/{{componentType.id}}">{{componentType.name}}</a></td>
+        </td>
+        <td>{{componentType.partOfPowerStation ? "Power Station" : "Power Unit"}}</td>
         </td>
     </tr>
 

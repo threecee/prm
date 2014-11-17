@@ -10,6 +10,16 @@ define(['angular', 'common'], function (angular) {
                 return response.data;
             });
         },
+        componentTypesForPowerStations: function () {
+            return playRoutes.controllers.ComponentTypes.componentTypesForPowerStations().get().then(function (response) {
+                return response.data;
+            });
+        },
+        componentTypesForPowerUnits: function () {
+            return playRoutes.controllers.ComponentTypes.componentTypesForPowerUnits().get().then(function (response) {
+                return response.data;
+            });
+        },
         componentType: function (id) {
         return playRoutes.controllers.ComponentTypes.componentType(id).get().then(function (response) {
           return response.data;

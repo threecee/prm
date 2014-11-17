@@ -8,6 +8,15 @@ import play.api.mvc._
 object ComponentTypes extends BaseController  {
 
 
+
+  def componentTypesForPowerUnits() = Action(parse.empty){ implicit request =>
+    Ok(Json.toJson(ComponentType.findAll().filterNot(_.partOfPowerStation)))
+  }
+  def componentTypesForPowerStations() = Action(parse.empty){ implicit request =>
+    Ok(Json.toJson(ComponentType.findAll().filter(_.partOfPowerStation)))
+  }
+
+
   def componentTypes() = Action(parse.empty){ implicit request =>
     Ok(Json.toJson(ComponentType.findAll))
   }

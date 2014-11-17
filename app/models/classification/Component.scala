@@ -18,6 +18,7 @@ case class Component(
                              )
 
 object Component {
+
   private val table: String = "components"
 
   import play.api.libs.functional.syntax._
@@ -67,9 +68,14 @@ object Component {
       dbMapper.makeSelectStatement(table, "powerunit" -> id).as(Component.simple *)
     }
   }
+  def findWithPowerStation(id: Long): Seq[Component] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "powerstation" -> id).as(Component.simple *)
+    }
+  }
 
 
-  def add(powerunitId:Long, eq:Component): Option[Long] = {
+  def addForPowerUnit(powerunitId:Long, eq:Component): Option[Long] = {
     DB.withTransaction {
       implicit connection =>
         dbMapper.makeInsertStatement(table, dbMapper.mapValues("componenttype" -> eq.componentType.id.get, "equipmentstate" -> eq.equipmentState.id, "powerunit" -> powerunitId))
@@ -80,12 +86,28 @@ object Component {
     }
   }
 
-  def add(powerunitId:Long, equipmentStateId:Long, componentTypeId:Long): Option[Long] = {
-     add(powerunitId, Component(None, EquipmentState.find(equipmentStateId).get, ComponentType.find(componentTypeId).get))
+  def addForPowerUnit(powerunitId:Long, equipmentStateId:Long, componentTypeId:Long): Option[Long] = {
+    addForPowerUnit(powerunitId, Component(None, EquipmentState.find(equipmentStateId).get, ComponentType.find(componentTypeId).get))
   }
 
 
-  def update(powerunitId:Long, eq:Component): Unit = {
+  def addForPowerStation(powerStationId:Long, eq:Component): Option[Long] = {
+    DB.withTransaction {
+      implicit connection =>
+        dbMapper.makeInsertStatement(table, dbMapper.mapValues("componenttype" -> eq.componentType.id.get, "equipmentstate" -> eq.equipmentState.id, "powerstation" -> powerStationId))
+          .executeInsert() match {
+          case Some(long) => Some(long.asInstanceOf[Long])
+          case None       => None
+        }
+    }
+  }
+
+  def addForPowerStation(powerStationId:Long, equipmentStateId:Long, componentTypeId:Long): Option[Long] = {
+    addForPowerStation(powerStationId, Component(None, EquipmentState.find(equipmentStateId).get, ComponentType.find(componentTypeId).get))
+  }
+
+
+  def updateForPowerUnit(powerunitId:Long, eq:Component): Unit = {
     DB.withTransaction {
       implicit connection =>
         if(find(eq.id.getOrElse(-1)).isDefined){
@@ -93,7 +115,20 @@ object Component {
             .executeUpdate()
         }
         else{
-          val id = add(powerunitId, eq)
+          val id = addForPowerUnit(powerunitId, eq)
+        }
+    }
+  }
+
+  def updateForPowerStation(powerstationId:Long, eq:Component): Unit = {
+    DB.withTransaction {
+      implicit connection =>
+        if(find(eq.id.getOrElse(-1)).isDefined){
+          dbMapper.makeUpdateStatement(table, "id" -> eq.id, dbMapper.mapValues("componenttype" -> eq.componentType.id.get, "equipmentstate" -> eq.equipmentState.id, "powerstation" -> powerstationId))
+            .executeUpdate()
+        }
+        else{
+          val id = addForPowerStation(powerstationId, eq)
         }
     }
   }

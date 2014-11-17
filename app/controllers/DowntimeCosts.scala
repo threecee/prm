@@ -28,6 +28,7 @@ object DowntimeCosts extends BaseController  {
       }
     }
     else {
+      prettyPrintError(state)
       BadRequest(request.body)
     }
   }

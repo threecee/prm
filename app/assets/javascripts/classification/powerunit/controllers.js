@@ -24,7 +24,7 @@ define([], function () {
 
 
         $scope.getComponentTypes = function () {
-            componentTypeService.componentTypes().then(function (eq) {
+            componentTypeService.componentTypesForPowerUnits().then(function (eq) {
                 $scope.componentTypes = eq;
                 promise.then(function () {
                     for (var i = 0; i < $scope.componentTypes.length; i++) {
@@ -78,10 +78,10 @@ define([], function () {
 
         $scope.updateComponent = function (newcomponent, componentType) {
             if (componentType.component !== null) {
-                componentService.updateComponent($scope.powerUnit.id, componentType.component);
+                componentService.updateComponentForPowerUnit($scope.powerUnit.id, componentType.component);
             }
             else {
-                componentService.updateComponentByValues($scope.powerUnit.id, componentType.id, newcomponent).then(function (newcomponentObject) {
+                componentService.updateComponentForPowerUnitByValues($scope.powerUnit.id, componentType.id, newcomponent).then(function (newcomponentObject) {
                     $scope.powerUnit.components.push(newcomponentObject);
                     componentType.component = newcomponentObject;
                 });
@@ -94,6 +94,12 @@ define([], function () {
         };
 
 
+        $scope.createDowntimeCost = function (downtimeCost, planned) {
+            downtimeCost.planned = planned;
+            downtimecostService.createDowntimeCost($scope.powerUnit.id, downtimeCost).then(function (eq) {
+                $scope.powerUnit.downtimeCosts.push(eq);
+            });
+        };
 
 
 

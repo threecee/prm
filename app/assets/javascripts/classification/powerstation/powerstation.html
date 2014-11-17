@@ -20,6 +20,33 @@
 <button class="btn btn-primary" data-ng-click="addnew = true" ng-hide="addnew" >Add new power unit</button>
 <div ng-show="addnew" class="form-group">
     <label for="referenceId">Reference Id</label>
-    <input id="val" type="text" class="form-control" data-ng-model="powerUnit.referenceId" placeholder="referenceId" required /><br />
+    <input id="referenceId" type="text" class="form-control" data-ng-model="powerUnit.referenceId" placeholder="referenceId" required /><br />
     <button class="btn btn-primary" data-ng-disabled="form.$invalid" data-ng-click="createPowerUnit(powerUnit); addnew=false">Create</button>
-</div-->
+</div>
+
+<h3>Components</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Type</th>
+        <th>State</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="componentType in componentTypes" >
+        <td>{{componentType.name}}</td>
+        <td> <span ng-hide="editable">{{equipmentState.residuallifespan.span || 'Not defined'}}</span>
+            <input ng-show="editable && equipmentState.residuallifespan !== null" type="number" ng-model="equipmentState.residuallifespan.span">
+            <input ng-show="editable && equipmentState.residuallifespan === null" type="number" ng-model="newspan">
+        </td>
+        <td>
+            <button class="btn btn-primary" ng-hide="editable" data-ng-click="editable = true;">Edit</button>
+            <button class="btn btn-primary" ng-show="editable" data-ng-click="editable = updateResidualLifeSpan(newspan, equipmentState)">Update</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>

@@ -22,6 +22,10 @@ lazy val scalikejdbcVersion = "2.1.2"
 
 lazy val postgresVersion = "9.1-901-1.jdbc4"
 
+resolvers ++= Seq(
+  "bedatadriven" at "http://nexus.bedatadriven.com/content/groups/public/"
+)
+
 // Dependencies
 libraryDependencies ++= Seq(
   jdbc,
@@ -37,6 +41,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.1",
   "org.webjars" % "bootstrap" % "3.1.1-2" exclude("org.webjars", "jquery"),
   "org.webjars" % "angularjs" % "1.2.18" exclude("org.webjars", "jquery"),
+  "org.renjin" % "renjin-script-engine" % "0.7.0-RC7"  ,
     filters,
   cache
 )

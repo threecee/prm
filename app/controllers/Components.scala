@@ -15,11 +15,11 @@ object Components extends BaseController  {
      Ok(Json.toJson(Component.find(id)))
   }
 
-  def createComponent(powerUnitId:Long) = Action(parse.json) { implicit request =>
+  def createComponentForPowerUnit(powerUnitId:Long) = Action(parse.json) { implicit request =>
     val state = request.body.validate[Component]
     if(state.isSuccess)
     {
-     val id = Component.add(powerUnitId, state.get)
+     val id = Component.addForPowerUnit(powerUnitId, state.get)
       if(id.isDefined) {
         Created(Json.toJson(Component.find(id.get)))
       }
@@ -33,11 +33,58 @@ object Components extends BaseController  {
     }
   }
 
-  def updateComponent(powerUnitId: Long) = Action(parse.json) { implicit request =>
+
+  def createComponentForPowerStation(powerStationId:Long) = Action(parse.json) { implicit request =>
     val state = request.body.validate[Component]
     if(state.isSuccess)
     {
-      Component.update(powerUnitId, state.get)
+      val id = Component.addForPowerStation(powerStationId, state.get)
+      if(id.isDefined) {
+        Created(Json.toJson(Component.find(id.get)))
+      }
+      else {
+        BadRequest(request.body)
+      }
+    }
+    else {
+      prettyPrintError(state)
+      BadRequest(request.body)
+    }
+  }
+
+
+  def updateComponentForPowerStation(powerStationId: Long) = Action(parse.json) { implicit request =>
+    val state = request.body.validate[Component]
+    if(state.isSuccess)
+    {
+      Component.updateForPowerStation(powerStationId, state.get)
+      Accepted(Json.toJson(state.get))
+    }
+    else {
+      prettyPrintError(state)
+      BadRequest(request.body)
+    }
+  }
+  def updateComponentForPowerUnit(powerUnitId: Long) = Action(parse.json) { implicit request =>
+    val state = request.body.validate[Component]
+    if(state.isSuccess)
+    {
+      Component.updateForPowerUnit(powerUnitId, state.get)
+      Accepted(Json.toJson(state.get))
+    }
+    else {
+      prettyPrintError(state)
+      BadRequest(request.body)
+    }
+  }
+
+
+
+  def updateComponentForPowerStationByValues(powerStationId: Long, componentTypeId:Long) = Action(parse.json) { implicit request =>
+    val state = request.body.validate[Component]
+    if(state.isSuccess)
+    {
+      Component.updateForPowerStation(powerStationId, state.get)
       Accepted(Json.toJson(state.get))
     }
     else {

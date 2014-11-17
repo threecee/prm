@@ -4,6 +4,9 @@ define(['./componenttype_edit_directive'], function () {
     var CreateComponentTypeCtrl = function ($scope, $location, componentTypeService) {
 
         $scope.createComponentType = function (componentType) {
+            componentType.residuallifespans = [];
+            componentType.repairs = [];
+
             componentTypeService.createComponentType(componentType).then(function (eq) {
                 $location.path('/componenttypes/' + eq.id);
             });

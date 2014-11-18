@@ -1,0 +1,18 @@
+<div class="page-header"><h1>Groups</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Value</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="group in groups">
+        <td>{{group.name}}</td>
+        <td><button class="btn btn-warning"  data-ng-click="delete(group, $index)">Delete</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+<a class="btn btn-primary" href="#/group_create">Add</a>

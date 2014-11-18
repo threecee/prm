@@ -92,6 +92,19 @@ POST    /classification/powerstations                  controllers.PowerStations
 PUT     /classification/powerstations/:id              controllers.PowerStations.updatePowerStation(id: Long)
 DELETE  /classification/powerstations/:id              controllers.PowerStations.deletePowerStation(id: Long)
 
+# Groups
+GET     /classification/groups                  controllers.Groups.groups()
+GET     /classification/groups/:id              controllers.Groups.group(id: Long)
+POST    /classification/groups                  controllers.Groups.createGroup()
+PUT     /classification/groups/:id              controllers.Groups.updateGroup(id: Long)
+DELETE  /classification/groups/:id              controllers.Groups.deleteGroup(id: Long)
+
+# Regions
+GET     /classification/regions                  controllers.Regions.regions()
+GET     /classification/regions/:id              controllers.Regions.region(id: Long)
+POST    /classification/regions                  controllers.Regions.createRegion()
+PUT     /classification/regions/:id              controllers.Regions.updateRegion(id: Long)
+DELETE  /classification/regions/:id              controllers.Regions.deleteRegion(id: Long)
 
 
 # Static

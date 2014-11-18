@@ -11,7 +11,9 @@ define(['angular',
     './downtimecost/services',
     './powerunit/routes', './powerunit/services',
     './powerstation/routes', './powerstation/services',
-    './component/services'
+    './component/services',
+    './region/routes', './region/services',
+    './group/routes', './group/services'
 
 ], function(angular) {
   'use strict';
@@ -25,6 +27,8 @@ define(['angular',
       'downtimecost.services',
       'powerunit.routes', 'powerunit.services',
       'powerstation.routes', 'powerstation.services',
-      'component.services'
+      'component.services',
+      'region.routes', 'region.services',
+      'group.routes', 'group.services'
   ]);
 });

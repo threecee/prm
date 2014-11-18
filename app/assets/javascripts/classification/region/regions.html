@@ -1,0 +1,18 @@
+<div class="page-header"><h1>Regions</h1></div>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="region in regions">
+        <td>{{region.name}}</td>
+        <td><button class="btn btn-warning"  data-ng-click="delete(region, $index)">Delete</button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+<a class="btn btn-primary" href="#/region_create">Add</a>

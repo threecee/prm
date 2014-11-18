@@ -56,6 +56,25 @@ object DowntimeCost {
     }
   }
 
+
+  val simpleWithPowerStation = {
+    get[Option[Long]]("id") ~
+      get[Int]("span") ~
+      get[Double]("cost") ~
+      get[Boolean]("planned") ~
+      get[Option[Long]]("powerstation") map { case id ~ span ~ cost ~ planned ~ powerstation =>  (powerstation, DowntimeCost(id, span, cost, planned))
+    }
+  }
+
+  val simpleWithPowerUnit = {
+    get[Option[Long]]("id") ~
+      get[Int]("span") ~
+      get[Double]("cost") ~
+      get[Boolean]("planned") ~
+      get[Option[Long]]("powerunit") map { case id ~ span ~ cost ~ planned ~ powerunit =>  (powerunit, DowntimeCost(id, span, cost, planned))
+    }
+  }
+
   def findAll(): Seq[DowntimeCost] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table).as(DowntimeCost.simple *)
@@ -78,7 +97,24 @@ object DowntimeCost {
       dbMapper.makeSelectStatement(table, "powerstation" -> id).as(DowntimeCost.simple *)
     }
   }
+  def findAllWithPowerStation(): Seq[(Long, Seq[DowntimeCost])] = {
+    DB.withConnection { implicit connection =>
+      val list:Seq[(Option[Long], DowntimeCost)] =  dbMapper.makeSelectStatement(table).as(DowntimeCost.simpleWithPowerStation *)
 
+      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
+      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+
+    }
+  }
+  def findAllWithPowerUnit(): Seq[(Long, Seq[DowntimeCost])] = {
+    DB.withConnection { implicit connection =>
+      val list:Seq[(Option[Long], DowntimeCost)] =  dbMapper.makeSelectStatement(table).as(DowntimeCost.simpleWithPowerUnit *)
+
+      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
+      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+
+    }
+  }
 
   def add(powerUnitId:Long, eq:DowntimeCost): Option[Long] = {
     DB.withTransaction {

@@ -19,6 +19,7 @@ case class PowerUnit(
                              )
 
 object PowerUnit {
+
   private val table: String = "powerunits"
 
   import play.api.libs.functional.syntax._
@@ -53,6 +54,33 @@ object PowerUnit {
       get[Option[String]]("referenceid")  map { case id  ~ referenceid  => PowerUnit(id, referenceid, DowntimeCost.findByPowerUnit(id.get), Component.findWithPowerUnit(id.get))
     }
   }
+  def simpleWithPowerStation(downtimeCosts:Seq[(Long, Seq[DowntimeCost])], components:Seq[(Long, Seq[Component])]) = {
+    get[Option[Long]]("id") ~
+      get[Long]("powerstation") ~
+      get[Option[String]]("referenceid")  map { case id  ~ powerstation ~ referenceid  => (powerstation, PowerUnit(id, referenceid, findDowntimeCost(id.get, downtimeCosts) , findComponents(id.get, components)))
+    }
+  }
+
+  def findDowntimeCost(id:Long, downtimeCosts:Seq[(Long, Seq[DowntimeCost])]):Seq[DowntimeCost] = {
+    val result = downtimeCosts.find(_._1 == id)
+      if(result.isDefined)
+        {
+          result.get._2
+        }
+        else {
+        Seq.empty
+      }
+  }
+  def findComponents(id:Long, components:Seq[(Long, Seq[Component])]):Seq[Component] = {
+    val result = components.find(_._1 == id)
+    if(result.isDefined)
+    {
+      result.get._2
+    }
+    else {
+      Seq.empty
+    }
+  }
 
   def findAll(): Seq[PowerUnit] = {
     DB.withConnection { implicit connection =>
@@ -66,9 +94,28 @@ object PowerUnit {
     }
   }
 
+
+
+  def findByReference(ref: String): Option[PowerUnit] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "referenceid" -> ref).as(PowerUnit.simple.singleOpt)
+    }
+  }
+
+
   def findWithPowerStation(id: Long): Seq[PowerUnit] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "powerStation" -> id).as(PowerUnit.simple *)
+    }
+  }
+
+  def findAllWithPowerStation(): Seq[(Long, Seq[PowerUnit])] = {
+    DB.withConnection { implicit connection =>
+    val list:Seq[(Long, PowerUnit)] =  dbMapper.makeSelectStatement(table).as(PowerUnit.simpleWithPowerStation(DowntimeCost.findAllWithPowerUnit(), Component.findAllWithPowerUnit()) *)
+
+    val ids:Seq[Long] = list.map(item => item._1).distinct
+    ids.map(id => (id, list.filter(_._1 == id).map(item => item._2)))
+
     }
   }
 

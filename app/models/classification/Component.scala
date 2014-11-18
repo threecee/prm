@@ -51,6 +51,24 @@ object Component {
     }
   }
 
+
+  val simpleWithPowerStation = {
+    get[Option[Long]]("id") ~
+      get[Long]("equipmentstate") ~
+      get[Long]("componenttype")~
+      get[Option[Long]]("powerstation") map { case id ~ equipmentstate ~ componenttype ~ powerstation =>  (powerstation, Component(id, EquipmentState.find(equipmentstate).get, ComponentType.find(componenttype).get))
+    }
+  }
+
+  val simpleWithPowerUnit = {
+    get[Option[Long]]("id") ~
+      get[Long]("equipmentstate") ~
+      get[Long]("componenttype") ~
+      get[Option[Long]]("powerunit") map { case id ~ equipmentstate ~ componenttype ~ powerunit =>  (powerunit, Component(id, EquipmentState.find(equipmentstate).get, ComponentType.find(componenttype).get))
+    }
+  }
+
+
   def findAll(): Seq[Component] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table).as(Component.simple *)
@@ -73,7 +91,24 @@ object Component {
       dbMapper.makeSelectStatement(table, "powerstation" -> id).as(Component.simple *)
     }
   }
+  def findAllWithPowerStation(): Seq[(Long, Seq[Component])] = {
+    DB.withConnection { implicit connection =>
+      val list:Seq[(Option[Long], Component)] =  dbMapper.makeSelectStatement(table).as(Component.simpleWithPowerStation *)
 
+      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
+      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+
+    }
+  }
+  def findAllWithPowerUnit(): Seq[(Long, Seq[Component])] = {
+    DB.withConnection { implicit connection =>
+      val list:Seq[(Option[Long], Component)] =  dbMapper.makeSelectStatement(table).as(Component.simpleWithPowerUnit *)
+
+      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
+      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+
+    }
+  }
 
   def addForPowerUnit(powerunitId:Long, eq:Component): Option[Long] = {
     DB.withTransaction {

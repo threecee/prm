@@ -68,9 +68,48 @@ object PowerStation {
     }
   }
 
+  def simpleFast(units:Seq[(Long, Seq[PowerUnit])], groups:Seq[Group], regions:Seq[Region], downtimeCosts:Seq[(Long, Seq[DowntimeCost])], components:Seq[(Long, Seq[Component])]) = {
+    get[Option[Long]]("id") ~
+      get[String]("name") ~
+      get[Option[Long]]("group_id") ~
+      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, findPowerUnit(id.get, units), findDowntimeCost(id.get, downtimeCosts), findComponents(id.get, components), groups.find(_.id.get == group.getOrElse(-1)), regions.find(_.id.get == region.getOrElse(-1)) )
+    }
+  }
+
+  def findPowerUnit(id:Long, units:Seq[(Long, Seq[PowerUnit])]):Seq[PowerUnit] = {
+    val result = units.find(_._1 == id)
+    if(result.isDefined)
+    {
+      result.get._2
+    }
+    else {
+      Seq.empty
+    }
+  }
+  def findDowntimeCost(id:Long, downtimeCosts:Seq[(Long, Seq[DowntimeCost])]):Seq[DowntimeCost] = {
+    val result = downtimeCosts.find(_._1 == id)
+    if(result.isDefined)
+    {
+      result.get._2
+    }
+    else {
+      Seq.empty
+    }
+  }
+  def findComponents(id:Long, components:Seq[(Long, Seq[Component])]):Seq[Component] = {
+    val result = components.find(_._1 == id)
+    if(result.isDefined)
+    {
+      result.get._2
+    }
+    else {
+      Seq.empty
+    }
+  }
+
   def findAll(): Seq[PowerStation] = {
     DB.withConnection { implicit connection =>
-      dbMapper.makeSelectStatement(table).as(PowerStation.simple *)
+      dbMapper.makeSelectStatement(table).as(PowerStation.simpleFast(PowerUnit.findAllWithPowerStation(), Group.findAll(), Region.findAll(), DowntimeCost.findAllWithPowerStation(), Component.findAllWithPowerStation()) *)
     }
   }
 

@@ -107,7 +107,8 @@ PUT     /classification/regions/:id              controllers.Regions.updateRegio
 DELETE  /classification/regions/:id              controllers.Regions.deleteRegion(id: Long)
 
 #imports
-POST    /imports/powerstations                  controllers.importers.ImportPowerStations.powerstations()
+POST    /imports/powerstations                  controllers.importers.ImportPowerStations.importer()
+POST    /imports/powerunits                  controllers.importers.ImportPowerUnits.importer()
 
 
 # Static

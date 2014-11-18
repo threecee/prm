@@ -41,7 +41,9 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.1",
   "org.webjars" % "bootstrap" % "3.1.1-2" exclude("org.webjars", "jquery"),
   "org.webjars" % "angularjs" % "1.2.18" exclude("org.webjars", "jquery"),
-  "org.renjin" % "renjin-script-engine" % "0.7.0-RC7"  ,
+  "org.renjin" % "renjin-script-engine" % "0.7.0-RC7",
+  "org.apache.poi" % "poi" % "3.10.1",
+  "org.apache.poi" % "poi-ooxml" % "3.10.1",
     filters,
   cache
 )

@@ -21,6 +21,7 @@ region:Option[Region]
                          )
 
 object PowerStation {
+
   private val table: String = "powerstations"
 
   import play.api.libs.functional.syntax._
@@ -78,6 +79,13 @@ object PowerStation {
       dbMapper.makeSelectStatement(table, "id" -> id).as(PowerStation.simple.singleOpt)
     }
   }
+
+  def findByName(name: String): Option[PowerStation] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> name).as(PowerStation.simple.singleOpt)
+    }
+  }
+
 
   def add(eq:PowerStation): Option[Long] = {
     DB.withTransaction {

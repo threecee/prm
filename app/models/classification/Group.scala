@@ -56,6 +56,13 @@ object Group {
     }
   }
 
+  def findByName(name: String): Option[Group] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> name).as(Group.simple.singleOpt)
+    }
+  }
+
+
   def add(eq:Group): Option[Long] = {
     DB.withTransaction {
       implicit connection =>
@@ -87,5 +94,6 @@ object Group {
           .executeUpdate()
     }
   }
+
 
 }

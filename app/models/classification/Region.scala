@@ -55,6 +55,13 @@ object Region {
       dbMapper.makeSelectStatement(table, "id" -> id).as(Region.simple.singleOpt)
     }
   }
+  def findByName(name: String): Option[Region] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> name).as(Region.simple.singleOpt)
+    }
+  }
+
+
 
   def add(eq:Region): Option[Long] = {
     DB.withTransaction {

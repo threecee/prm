@@ -56,13 +56,13 @@ object dbMapper {
     val listUpdates:String = definedTuples.map(tuple => tuple._1 + " =  ({" + tuple._1 + "})").mkString(", ")
     val idKey:String = idTuple._1
 
-    SQL(s"""update $table set $listUpdates where $idKey = ($idKey)""").on(dbMapper.mapQuery(merge(idTuple, tuples)):_* )
+    SQL(s"""update $table set $listUpdates where $idKey = ({$idKey})""").on(dbMapper.mapQuery(merge(idTuple, tuples)):_* )
   }
   def makeSelectStatement(table:String, idTuple:(String, Any)):SimpleSql[Row] = {
     val idKey:String = idTuple._1
     val idValue:Any = idTuple._2
 
-    SQL(s"""select * from $table where $idKey = ($idValue)""").on(dbMapper.mapTuple(idTuple))
+    SQL(s"""select * from $table where $idKey = ({$idKey})""").on(dbMapper.mapTuple(idTuple))
   }
 
   def makeSelectStatement(table:String):SimpleSql[Row] = {

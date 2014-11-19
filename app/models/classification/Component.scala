@@ -81,6 +81,12 @@ object Component {
     }
   }
 
+  def findByName(ref: String): Option[Component] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> ref).as(Component.simple.singleOpt)
+    }
+  }
+
   def findWithPowerUnit(id: Long): Seq[Component] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "powerunit" -> id).as(Component.simple *)

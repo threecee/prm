@@ -55,6 +55,11 @@ object EquipmentState {
       dbMapper.makeSelectStatement(table, "id" -> id).as(EquipmentState.simple.singleOpt)
     }
   }
+  def findByReference(ref: Int): Option[EquipmentState] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "value" -> ref).as(EquipmentState.simple.singleOpt)
+    }
+  }
 
   def add(eq:EquipmentState): Option[Long] = {
     DB.withTransaction {

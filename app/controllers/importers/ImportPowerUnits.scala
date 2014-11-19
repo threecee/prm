@@ -8,23 +8,6 @@ object ImportPowerUnits   extends ImportBase
   {
 
 
-  def getCellValueAsString(cell:Cell):String = {
-   cell.getCellType match {
-     case Cell.CELL_TYPE_NUMERIC => {
-      val numeric:Double = cell.getNumericCellValue
-       if(numeric == numeric.toInt)
-       {
-         return numeric.toInt.toString
-       }
-       else return numeric.toString
-     }
-     case Cell.CELL_TYPE_STRING => cell.getStringCellValue
-     case _ => ""
-
-   }
-
-
-  }
 
   def processRow(row: Row) {
     val powerUnitId: String = getCellValueAsString(row.getCell(0))

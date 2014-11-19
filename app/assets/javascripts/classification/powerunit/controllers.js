@@ -42,7 +42,7 @@ define([], function () {
             powerUnitService.powerUnit($routeParams.id).then(function (eq) {
                 $scope.powerUnit = eq;
                 deferred.resolve();
-                $log.debug("PowerUnit value: " + $scope.powerUnit.name);
+                $log.debug("PowerUnit value: " + $scope.powerUnit.id);
             });
         };
 

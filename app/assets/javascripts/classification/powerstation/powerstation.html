@@ -38,7 +38,7 @@
     <tbody>
     <tr ng-repeat="componentType in componentTypes" >
         <td>{{componentType.name}}</td>
-        <td> <span ng-hide="editable">{{equipmentState.residuallifespan.span || 'Not defined'}}</span>
+        <td> <span ng-hide="editable">{{componentType.component.equipmentState.value || 'Not defined'}}</span>
             <input ng-show="editable && equipmentState.residuallifespan !== null" type="number" ng-model="equipmentState.residuallifespan.span">
             <input ng-show="editable && equipmentState.residuallifespan === null" type="number" ng-model="newspan">
         </td>

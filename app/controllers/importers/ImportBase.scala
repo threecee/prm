@@ -3,8 +3,7 @@ package controllers.importers
 import java.io.{File, FileInputStream}
 
 import controllers.base.BaseController
-import models.classification.{Group, PowerStation, Region}
-import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.{Cell, Row}
 import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
 import play.api.libs.json.Json
 import play.api.mvc.Action
@@ -28,6 +27,55 @@ abstract class ImportBase   extends BaseController
 
     }
 
+  def getCellValueAsString(cell:Cell):String = {
+    cell.getCellType match {
+      case Cell.CELL_TYPE_NUMERIC => {
+        val numeric:Double = cell.getNumericCellValue
+        if(numeric == numeric.toInt)
+        {
+          return numeric.toInt.toString
+        }
+        else return numeric.toString
+      }
+      case Cell.CELL_TYPE_STRING => cell.getStringCellValue
+      case _ => ""
+
+    }
+
+
+  }
+
+
+ def getCellValueAsNumber(cell:Cell):Double = {
+    cell.getCellType match {
+      case Cell.CELL_TYPE_NUMERIC => {
+        cell.getNumericCellValue
+      }
+      case Cell.CELL_TYPE_STRING => {
+        val value: String = cell.getStringCellValue
+        if (value.length > 0) {
+          try {
+            return value.toDouble
+          } catch {
+            case e: Exception =>
+              return 0
+          }
+        }
+        return 0
+      }
+      case _ => return 0
+
+    }
+
+
+  }
+  def getCellValueAsInt(cell:Cell):Int = {
+    getCellValueAsNumber(cell).toInt
+
+  }
+
+
+
   def process(source:File): Unit = {
     val fis:FileInputStream = new FileInputStream(source)
     val wb:XSSFWorkbook = new XSSFWorkbook(fis)
@@ -35,7 +83,7 @@ abstract class ImportBase   extends BaseController
     val sh:XSSFSheet = wb.getSheetAt(0)
 
     var i = 1
-    while(i < sh.getLastRowNum)
+    while(i <= sh.getLastRowNum)
     {
       val row:Row = sh.getRow(i)
 

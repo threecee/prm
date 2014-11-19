@@ -109,6 +109,18 @@ DELETE  /classification/regions/:id              controllers.Regions.deleteRegio
 #imports
 POST    /imports/powerstations                  controllers.importers.ImportPowerStations.importer()
 POST    /imports/powerunits                  controllers.importers.ImportPowerUnits.importer()
+POST /imports/powerstations_componenttypes   controllers.importers.ImportPowerStationComponentTypes.importer()
+POST /imports/powerunits_componenttypes   controllers.importers.ImportPowerUnitComponentTypes.importer()
+POST /imports/powerstations_components_states   controllers.importers.ImportPowerStationComponentStates.importer()
+POST /imports/powerunits_components_states   controllers.importers.ImportPowerUnitComponentStates.importer()
+#POST /imports/powerstations_components   controllers.importers.ImportPowerStationsComponents.importer()
+#POST /imports/powerunits_components   controllers.importers.ImportPowerUnitsComponents.importer()
+#POST /imports/powerstations_components_downtimes   controllers.importers.ImportPowerStationsComponentsDowntimes.importer()
+#POST /imports/powerunits_components_downtimes   controllers.importers.ImportPowerunitsComponentsDowntimes.importer()
+#POST /imports/powerstations_components_unplanned_unavailability_costs   controllers.importers.ImportPowerStationsComponents_unplanned_unavailability_costs.importer()
+#POST /imports/powerunits_components_unplanned_unavailability_costs   controllers.importers.ImportPowerUnitsComponentsUnplannedUnavailabilityCosts.importer()
+#POST /imports/powerstations_components_planned_unavailability_costs   controllers.importers.ImportPowerstationsComponentsPlannedUnavailabilityCosts.importer()
+#POST /imports/powerunits_components_planned_unavailability_costs   controllers.importers.ImportPowerUnitsComponentsPlannedUnavailabilityCosts.importer()
 
 
 # Static

@@ -71,6 +71,12 @@ object ComponentType {
     }
   }
 
+  def findByName(ref: String): Option[ComponentType] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> ref).as(ComponentType.simple.singleOpt)
+    }
+  }
+
   def add(eq:ComponentType): Option[Long] = {
     DB.withTransaction {
       implicit connection =>

@@ -13,7 +13,9 @@ define(['angular',
     './powerstation/routes', './powerstation/services',
     './component/services',
     './region/routes', './region/services',
-    './group/routes', './group/services'
+    './group/routes', './group/services',
+    './importers/routes', './importers/services'
+
 
 ], function(angular) {
   'use strict';
@@ -29,6 +31,7 @@ define(['angular',
       'powerstation.routes', 'powerstation.services',
       'component.services',
       'region.routes', 'region.services',
-      'group.routes', 'group.services'
+      'group.routes', 'group.services' ,
+      'importers.routes', 'importers.services'
   ]);
 });

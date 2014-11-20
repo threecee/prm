@@ -7,7 +7,6 @@ import org.apache.poi.xssf.usermodel.XSSFSheet
 
 object ImportPowerStationComponentStates extends ImportBase
 {
-
   def processRow(row: Row) {
     val powerStationName: String = getCellValueAsString(row.getCell(0))
 
@@ -34,10 +33,10 @@ object ImportPowerStationComponentStates extends ImportBase
         if (componentType.isDefined && componentType.get.partOfPowerStation) {
           val existingComponent = powerStation.components.find(_.componentType.name == name)
           if (existingComponent.isDefined) {
-            Component.updateForPowerStation(powerStation.id.get, Component(existingComponent.get.id, state, componentType.get))
+            Component.updateForPowerStation(powerStation.id.get, Component(existingComponent.get.id, state,  Seq.empty,componentType.get))
           }
           else {
-            Component.addForPowerStation(powerStation.id.get, Component(None, state, componentType.get))
+            Component.addForPowerStation(powerStation.id.get, Component(None, state, Seq.empty, componentType.get))
           }
           println("Added Component " + name + " with state " + state.value + " to stations " + powerStation.id.get)
         }
@@ -52,13 +51,6 @@ object ImportPowerStationComponentStates extends ImportBase
     }
   }
 
-  def getState(value: Int):EquipmentState = {
-    val stateOption: Option[EquipmentState] = EquipmentState.findByReference(value)
-    if (!stateOption.isDefined) {
-      EquipmentState.add(EquipmentState(None, value))
-    }
-    return EquipmentState.findByReference(value).get
 
-  }
 }
 

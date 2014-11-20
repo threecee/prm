@@ -15,11 +15,11 @@ object DowntimeCosts extends BaseController  {
      Ok(Json.toJson(DowntimeCost.find(id)))
   }
 
-  def createDowntimeCost(powerUnitId:Long) = Action(parse.json) { implicit request =>
+  def createDowntimeCostForPowerUnit(powerUnitId:Long) = Action(parse.json) { implicit request =>
     val state = request.body.validate[DowntimeCost]
     if(state.isSuccess)
     {
-     val id = DowntimeCost.add(powerUnitId, state.get)
+     val id = DowntimeCost.addForPowerUnit(powerUnitId, state.get)
       if(id.isDefined) {
         Created(Json.toJson(DowntimeCost.find(id.get)))
       }
@@ -33,11 +33,41 @@ object DowntimeCosts extends BaseController  {
     }
   }
 
-  def updateDowntimeCost(powerUnitId: Long) = Action(parse.json) { implicit request =>
+  def createDowntimeCostForPowerStation(powerStationId:Long) = Action(parse.json) { implicit request =>
     val state = request.body.validate[DowntimeCost]
     if(state.isSuccess)
     {
-      DowntimeCost.update(powerUnitId, state.get)
+      val id = DowntimeCost.addForPowerStation(powerStationId, state.get)
+      if(id.isDefined) {
+        Created(Json.toJson(DowntimeCost.find(id.get)))
+      }
+      else {
+        BadRequest(request.body)
+      }
+    }
+    else {
+      prettyPrintError(state)
+      BadRequest(request.body)
+    }
+  }
+
+  def updateDowntimeCostForPowerUnit(powerUnitId: Long) = Action(parse.json) { implicit request =>
+    val state = request.body.validate[DowntimeCost]
+    if(state.isSuccess)
+    {
+      DowntimeCost.updateForPowerUnit(powerUnitId, state.get)
+      Accepted(Json.toJson(state.get))
+    }
+    else {
+      prettyPrintError(state)
+      BadRequest(request.body)
+    }
+  }
+  def updateDowntimeCostForPowerStation(powerStationId: Long) = Action(parse.json) { implicit request =>
+    val state = request.body.validate[DowntimeCost]
+    if(state.isSuccess)
+    {
+      DowntimeCost.updateForPowerStation(powerStationId, state.get)
       Accepted(Json.toJson(state.get))
     }
     else {

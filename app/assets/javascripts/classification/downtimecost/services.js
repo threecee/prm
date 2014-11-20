@@ -15,14 +15,25 @@ define(['angular', 'common'], function (angular) {
           return response.data;
         });
       },
-      createDowntimeCost: function (powerUnitId, data) {
-        return playRoutes.controllers.DowntimeCosts.createDowntimeCost(powerUnitId).post(data).then(function (response) {
+      createDowntimeCostForPowerStation: function (powerStationId, data) {
+        return playRoutes.controllers.DowntimeCosts.createDowntimeCostForPowerStation(powerStationId).post(data).then(function (response) {
           $log.info("Created new downtimecost");
             return response.data;
         });
       },
-      updateDowntimeCost: function (powerUnitId, data) {
-            return playRoutes.controllers.DowntimeCosts.updateDowntimeCost(powerUnitId).post(data).then(function () {
+      updateDowntimeCostForPowerStation: function (powerStationId, data) {
+            return playRoutes.controllers.DowntimeCosts.updateDowntimeCostForPowerStation(powerStationId).post(data).then(function () {
+                $log.info("Update downtimecost");
+            });
+        },
+        createDowntimeCostForPowerUnit: function (powerUnitId, data) {
+            return playRoutes.controllers.DowntimeCosts.createDowntimeCostForPowerUnit(powerUnitId).post(data).then(function (response) {
+                $log.info("Created new downtimecost");
+                return response.data;
+            });
+        },
+        updateDowntimeCostForPowerUnit: function (powerUnitId, data) {
+            return playRoutes.controllers.DowntimeCosts.updateDowntimeCostForPowerUnit(powerUnitId).post(data).then(function () {
                 $log.info("Update downtimecost");
             });
         },

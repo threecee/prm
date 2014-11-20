@@ -100,7 +100,7 @@ define([], function () {
 
     var ShowPowerStationsCtrl = function ($scope, $location, powerStationService) {
         $scope.powerStations = {};
-        powerStationService.powerStations().then(function (eq) {
+        powerStationService.powerStationsNoDeps().then(function (eq) {
             $scope.powerStations = eq;
         });
 

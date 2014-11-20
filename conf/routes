@@ -65,8 +65,10 @@ DELETE  /classification/repairs/:id              controllers.Repairs.deleteRepai
 # DowntimeCosts
 GET     /classification/downtimecosts                  controllers.DowntimeCosts.downtimecosts()
 GET     /classification/downtimecosts/:id              controllers.DowntimeCosts.downtimecost(id: Long)
-POST    /classification/downtimecosts                  controllers.DowntimeCosts.createDowntimeCost(powerUnitId:Long)
-PUT     /classification/downtimecosts/:id              controllers.DowntimeCosts.updateDowntimeCost(id: Long)
+POST    /classification/downtimecosts                  controllers.DowntimeCosts.createDowntimeCostForPowerUnit(powerUnitId:Long)
+PUT     /classification/downtimecosts/:id              controllers.DowntimeCosts.updateDowntimeCostForPowerUnit(id: Long)
+POST    /classification/downtimecosts                  controllers.DowntimeCosts.createDowntimeCostForPowerStation(powerStationId:Long)
+PUT     /classification/downtimecosts/:id              controllers.DowntimeCosts.updateDowntimeCostForPowerStation(id: Long)
 DELETE  /classification/downtimecosts/:id              controllers.DowntimeCosts.deleteDowntimeCost(id: Long)
 
 # Components
@@ -87,6 +89,7 @@ DELETE  /classification/powerunits/:id              controllers.PowerUnits.delet
 
 # PowerStations
 GET     /classification/powerstations                  controllers.PowerStations.powerStations()
+GET     /classification/powerstationsNoDeps                  controllers.PowerStations.powerStationsNoDeps()
 GET     /classification/powerstations/:id              controllers.PowerStations.powerStation(id: Long)
 POST    /classification/powerstations                  controllers.PowerStations.createPowerStation()
 PUT     /classification/powerstations/:id              controllers.PowerStations.updatePowerStation(id: Long)
@@ -113,12 +116,12 @@ POST /imports/powerstations_componenttypes   controllers.importers.ImportPowerSt
 POST /imports/powerunits_componenttypes   controllers.importers.ImportPowerUnitComponentTypes.importer()
 POST /imports/powerstations_components_states   controllers.importers.ImportPowerStationComponentStates.importer()
 POST /imports/powerunits_components_states   controllers.importers.ImportPowerUnitComponentStates.importer()
+POST /imports/powerstations_components_unplanned_unavailability_costs   controllers.importers.ImportPowerStationComponentUnplannedUnavailabilityCosts.importer()
+POST /imports/powerunits_components_unplanned_unavailability_costs   controllers.importers.ImportPowerUnitComponentUnplannedUnavailabilityCosts.importer()
 #POST /imports/powerstations_components   controllers.importers.ImportPowerStationsComponents.importer()
 #POST /imports/powerunits_components   controllers.importers.ImportPowerUnitsComponents.importer()
 #POST /imports/powerstations_components_downtimes   controllers.importers.ImportPowerStationsComponentsDowntimes.importer()
 #POST /imports/powerunits_components_downtimes   controllers.importers.ImportPowerunitsComponentsDowntimes.importer()
-#POST /imports/powerstations_components_unplanned_unavailability_costs   controllers.importers.ImportPowerStationsComponents_unplanned_unavailability_costs.importer()
-#POST /imports/powerunits_components_unplanned_unavailability_costs   controllers.importers.ImportPowerUnitsComponentsUnplannedUnavailabilityCosts.importer()
 #POST /imports/powerstations_components_planned_unavailability_costs   controllers.importers.ImportPowerstationsComponentsPlannedUnavailabilityCosts.importer()
 #POST /imports/powerunits_components_planned_unavailability_costs   controllers.importers.ImportPowerUnitsComponentsPlannedUnavailabilityCosts.importer()
 

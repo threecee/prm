@@ -68,6 +68,14 @@ object PowerStation {
     }
   }
 
+  val simpleNoDeps = {
+    get[Option[Long]]("id") ~
+      get[String]("name") ~
+      get[Option[Long]]("group_id") ~
+      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, Seq.empty,  Seq.empty,  Seq.empty, None,  None)
+    }
+  }
+
   def simpleFast(units:Seq[(Long, Seq[PowerUnit])], groups:Seq[Group], regions:Seq[Region], downtimeCosts:Seq[(Long, Seq[DowntimeCost])], components:Seq[(Long, Seq[Component])]) = {
     get[Option[Long]]("id") ~
       get[String]("name") ~
@@ -110,6 +118,11 @@ object PowerStation {
   def findAll(): Seq[PowerStation] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table).as(PowerStation.simpleFast(PowerUnit.findAllWithPowerStation(), Group.findAll(), Region.findAll(), DowntimeCost.findAllWithPowerStation(), Component.findAllWithPowerStation()) *)
+    }
+  }
+  def findAllNoDeps(): Seq[PowerStation] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table).as(PowerStation.simpleNoDeps *)
     }
   }
 

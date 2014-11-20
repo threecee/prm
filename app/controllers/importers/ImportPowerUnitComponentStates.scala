@@ -35,10 +35,10 @@ object ImportPowerUnitComponentStates extends ImportBase
         if (componentType.isDefined && !componentType.get.partOfPowerStation) {
           val existingComponent = powerUnit.components.find(_.componentType.name == name)
           if (existingComponent.isDefined) {
-            Component.updateForPowerUnit(powerUnit.id.get, Component(existingComponent.get.id, state, componentType.get))
+            Component.updateForPowerUnit(powerUnit.id.get, Component(existingComponent.get.id, state, Seq.empty, componentType.get))
           }
           else {
-            Component.addForPowerUnit(powerUnit.id.get, Component(None, state, componentType.get))
+            Component.addForPowerUnit(powerUnit.id.get, Component(None, state, Seq.empty, componentType.get))
           }
           println("Added Component " + name + " with state " + state.value + " to unit " + powerUnit.id.get)
         }
@@ -53,13 +53,5 @@ object ImportPowerUnitComponentStates extends ImportBase
     }
   }
 
-  def getState(value: Int):EquipmentState = {
-    val stateOption: Option[EquipmentState] = EquipmentState.findByReference(value)
-    if (!stateOption.isDefined) {
-      EquipmentState.add(EquipmentState(None, value))
-    }
-   return EquipmentState.findByReference(value).get
-
-  }
 }
 

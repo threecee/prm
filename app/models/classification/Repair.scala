@@ -77,6 +77,11 @@ object Repair {
       dbMapper.makeSelectStatement(table, "componenttype" -> id).as(Repair.simple *)
     }
   }
+  def findWithComponent(id: Long): Seq[Repair] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "component" -> id).as(Repair.simple *)
+    }
+  }
 
 
   def add(componentId:Long, eq:Repair): Option[Long] = {

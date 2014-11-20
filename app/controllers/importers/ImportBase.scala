@@ -3,10 +3,13 @@ package controllers.importers
 import java.io.{File, FileInputStream}
 
 import controllers.base.BaseController
+import models.classification.EquipmentState
 import org.apache.poi.ss.usermodel.{Cell, Row}
 import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
 import play.api.libs.json.Json
 import play.api.mvc.Action
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 
 abstract class ImportBase   extends BaseController
@@ -69,6 +72,30 @@ abstract class ImportBase   extends BaseController
 
 
   }
+  def getCellValueAsNumberOption(cell:Cell):Option[Double] = {
+    cell.getCellType match {
+      case Cell.CELL_TYPE_NUMERIC => {
+        Some(cell.getNumericCellValue)
+      }
+      case Cell.CELL_TYPE_STRING => {
+        val value: String = cell.getStringCellValue
+        if (value.length > 0) {
+          try {
+            return Some(value.toDouble)
+          } catch {
+            case e: Exception =>
+              return None
+          }
+        }
+        return None
+      }
+      case _ => return None
+
+    }
+
+
+  }
+
   def getCellValueAsInt(cell:Cell):Int = {
     getCellValueAsNumber(cell).toInt
 
@@ -87,7 +114,7 @@ abstract class ImportBase   extends BaseController
     {
       val row:Row = sh.getRow(i)
 
-      processRow(row)
+     Future { processRow(row) }
 
       i += 1
     }
@@ -96,7 +123,17 @@ abstract class ImportBase   extends BaseController
 
   }
 
+  def getState(value: Int):EquipmentState = {
+    val stateOption: Option[EquipmentState] = EquipmentState.findByReference(value)
+    if (!stateOption.isDefined) {
+      EquipmentState.add(EquipmentState(None, value))
+    }
+    return EquipmentState.findByReference(value).get
 
-   def processRow(row: Row)
+  }
+
+
+
+  def processRow(row: Row)
 }
 

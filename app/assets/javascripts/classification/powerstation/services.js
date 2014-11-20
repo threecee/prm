@@ -10,6 +10,11 @@ define(['angular', 'common'], function (angular) {
                 return response.data;
             });
         },
+        powerStationsNoDeps: function () {
+            return playRoutes.controllers.PowerStations.powerStationsNoDeps().get().then(function (response) {
+                return response.data;
+            });
+        },
         powerStation: function (id) {
         return playRoutes.controllers.PowerStations.powerStation(id).get().then(function (response) {
           return response.data;

@@ -11,6 +11,9 @@ object PowerStations extends BaseController  {
   def powerStations() = Action(parse.empty){ implicit request =>
     Ok(Json.toJson(PowerStation.findAll))
   }
+  def powerStationsNoDeps() = Action(parse.empty){ implicit request =>
+    Ok(Json.toJson(PowerStation.findAllNoDeps()))
+  }
   def powerStation(id: Long) = Action(parse.empty){ implicit request =>
     Ok(Json.toJson(PowerStation.find(id)))
   }

@@ -118,6 +118,7 @@ POST /imports/powerstations_components_states   controllers.importers.ImportPowe
 POST /imports/powerunits_components_states   controllers.importers.ImportPowerUnitComponentStates.importer()
 POST /imports/powerstations_components_unplanned_unavailability_costs   controllers.importers.ImportPowerStationComponentUnplannedUnavailabilityCosts.importer()
 POST /imports/powerunits_components_unplanned_unavailability_costs   controllers.importers.ImportPowerUnitComponentUnplannedUnavailabilityCosts.importer()
+POST /imports/general_lifespans   controllers.importers.ImportGeneralLifespans.importer()
 #POST /imports/powerstations_components   controllers.importers.ImportPowerStationsComponents.importer()
 #POST /imports/powerunits_components   controllers.importers.ImportPowerUnitsComponents.importer()
 #POST /imports/powerstations_components_downtimes   controllers.importers.ImportPowerStationsComponentsDowntimes.importer()

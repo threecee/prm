@@ -18,7 +18,8 @@ define(['angular', './controllers', 'common'], function(angular, controllers) {
         .when('/importers/powerstations_components_unplanned_unavailability_costs', {templateUrl:'/assets/javascripts/classification/importers/powerstations_components_unplanned_unavailability_costs.html', controller:controllers.ShowImportersCtrl})
         .when('/importers/powerunits_components_unplanned_unavailability_costs', {templateUrl:'/assets/javascripts/classification/importers/powerunits_components_unplanned_unavailability_costs.html', controller:controllers.ShowImportersCtrl})
         .when('/importers/powerstations_components_planned_unavailability_costs', {templateUrl:'/assets/javascripts/classification/importers/powerstations_components_planned_unavailability_costs.html', controller:controllers.ShowImportersCtrl})
-        .when('/importers/powerunits_components_planned_unavailability_costs', {templateUrl:'/assets/javascripts/classification/importers/powerunits_components_planned_unavailability_costs.html', controller:controllers.ShowImportersCtrl});
+        .when('/importers/powerunits_components_planned_unavailability_costs', {templateUrl:'/assets/javascripts/classification/importers/powerunits_components_planned_unavailability_costs.html', controller:controllers.ShowImportersCtrl})
+      .when('/importers/general_lifespans', {templateUrl:'/assets/javascripts/classification/importers/general_lifespans.html', controller:controllers.ShowImportersCtrl});
   }]);
   return mod;
 });

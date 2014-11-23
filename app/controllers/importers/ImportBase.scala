@@ -50,28 +50,9 @@ abstract class ImportBase   extends BaseController
 
 
  def getCellValueAsNumber(cell:Cell):Double = {
-    cell.getCellType match {
-      case Cell.CELL_TYPE_NUMERIC => {
-        cell.getNumericCellValue
-      }
-      case Cell.CELL_TYPE_STRING => {
-        val value: String = cell.getStringCellValue
-        if (value.length > 0) {
-          try {
-            return value.toDouble
-          } catch {
-            case e: Exception =>
-              return 0
-          }
-        }
-        return 0
-      }
-      case _ => return 0
-
-    }
-
-
+  getCellValueAsNumberOption(cell).getOrElse(0)
   }
+
   def getCellValueAsNumberOption(cell:Cell):Option[Double] = {
     cell.getCellType match {
       case Cell.CELL_TYPE_NUMERIC => {
@@ -97,7 +78,19 @@ abstract class ImportBase   extends BaseController
   }
 
   def getCellValueAsInt(cell:Cell):Int = {
-    getCellValueAsNumber(cell).toInt
+    getCellValueAsIntOption(cell).getOrElse(0)
+  }
+  def getCellValueAsIntOption(cell:Cell):Option[Int] = {
+    val doubleOption:Option[Double] = getCellValueAsNumberOption(cell)
+
+    if(doubleOption.isDefined)
+    {
+      Some(doubleOption.get.toInt)
+    }
+    else
+    {
+      None
+    }
 
   }
 

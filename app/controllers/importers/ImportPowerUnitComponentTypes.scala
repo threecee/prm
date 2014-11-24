@@ -11,7 +11,7 @@ object ImportPowerUnitComponentTypes extends ImportBase {
 
     if (!ComponentType.findByName(componentTypeName).isDefined) {
 
-      ComponentType.add(ComponentType(None, componentTypeName, Seq.empty, Seq.empty, false))
+      ComponentType.add(ComponentType(None, componentTypeName, Seq.empty, false))
       println("Added new Component type with name " + componentTypeName + " to power units")
     }
   }

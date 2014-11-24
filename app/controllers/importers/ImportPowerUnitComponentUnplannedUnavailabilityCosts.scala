@@ -12,6 +12,7 @@ object ImportPowerUnitComponentUnplannedUnavailabilityCosts extends ImportBase {
 
       if (PowerUnit.findByReference(powerUnitName).isDefined) {
         val powerUnit: PowerUnit = PowerUnit.findByReference(powerUnitName).get
+        val downtimeCosts:Seq[DowntimeCost] = DowntimeCost.findByPowerUnit(powerUnit.id.get)
 
         val startAt: Int = 2
         val stopAt: Int = row.getSheet.getRow(0).getLastCellNum
@@ -25,7 +26,7 @@ object ImportPowerUnitComponentUnplannedUnavailabilityCosts extends ImportBase {
           val value: Option[Double] = getCellValueAsNumberOption(row.getCell(i, Row.CREATE_NULL_AS_BLANK))
 
           if(value.isDefined) {
-            val existingSpanOption:Option[DowntimeCost] = powerUnit.downtimeCosts.find(_.span == span)
+            val existingSpanOption:Option[DowntimeCost] = downtimeCosts.find(_.span == span)
 
             if (existingSpanOption.isDefined) {
                 DowntimeCost.updateForPowerUnit(powerUnit.id.get, DowntimeCost(existingSpanOption.get.id, existingSpanOption.get.span, value.get, false))

@@ -14,7 +14,6 @@ import scala.concurrent.ExecutionContext
 case class Component(
                              id: Option[Long],
                              equipmentState:EquipmentState,
-                             repairs:Seq[Repair],
                              componentType:ComponentType
                              )
 
@@ -28,19 +27,16 @@ object Component {
   implicit val ComponentFromJson: Reads[Component] = (
     (__ \ "id").readNullable[Long] ~
       (__ \ "equipmentState").read[EquipmentState] ~
-      (__ \ "repairs").read[Seq[Repair]] ~
       (__ \ "componentType").read[ComponentType]
     )(Component.apply _)
 
   implicit val ComponentToJson: Writes[Component] = (
     (__ \ "id").writeNullable[Long] ~
       (__ \ "equipmentState").write[EquipmentState]  ~
-      (__ \ "repairs").write[Seq[Repair]]  ~
       (__ \ "componentType").write[ComponentType]
     )((component: Component) => (
     component.id,
     component.equipmentState,
-    component.repairs,
     component.componentType
     ))
 
@@ -51,14 +47,14 @@ object Component {
   val simple = {
     get[Option[Long]]("id") ~
       get[Long]("equipmentstate") ~
-      get[Long]("componenttype") map { case id ~ equipmentstate ~ componenttype => Component(id, EquipmentState.find(equipmentstate).get, Repair.findWithComponent(id.get), ComponentType.find(componenttype).get)
+      get[Long]("componenttype") map { case id ~ equipmentstate ~ componenttype => Component(id, EquipmentState.find(equipmentstate).get,  ComponentType.find(componenttype).get)
     }
   }
 
   def simpleFast(equipmentStates:Seq[EquipmentState], componentTypes:Seq[ComponentType]) = {
     get[Option[Long]]("id") ~
       get[Long]("equipmentstate") ~
-      get[Long]("componenttype") map { case id ~ equipmentstate ~ componenttype => Component(id, equipmentStates.find(_.id.get == equipmentstate).get, Repair.findWithComponent(id.get), componentTypes.find(_.id.get == componenttype).get)
+      get[Long]("componenttype") map { case id ~ equipmentstate ~ componenttype => Component(id, equipmentStates.find(_.id.get == equipmentstate).get,  componentTypes.find(_.id.get == componenttype).get)
     }
   }
 
@@ -67,7 +63,7 @@ object Component {
     get[Option[Long]]("id") ~
       get[Long]("equipmentstate") ~
       get[Long]("componenttype")~
-      get[Option[Long]]("powerstation") map { case id ~ equipmentstate ~ componenttype ~ powerstation =>  (powerstation, Component(id, equipmentStates.find(_.id.get == equipmentstate).get, Repair.findWithComponent(id.get), componentTypes.find(_.id.get == componenttype).get))
+      get[Option[Long]]("powerstation") map { case id ~ equipmentstate ~ componenttype ~ powerstation =>  (powerstation, Component(id, equipmentStates.find(_.id.get == equipmentstate).get,  componentTypes.find(_.id.get == componenttype).get))
     }
   }
 
@@ -75,7 +71,7 @@ object Component {
     get[Option[Long]]("id") ~
       get[Long]("equipmentstate") ~
       get[Long]("componenttype") ~
-      get[Option[Long]]("powerunit") map { case id ~ equipmentstate ~ componenttype ~ powerunit =>  (powerunit, Component(id, equipmentStates.find(_.id.get == equipmentstate).get, Repair.findWithComponent(id.get), componentTypes.find(_.id.get == componenttype).get))
+      get[Option[Long]]("powerunit") map { case id ~ equipmentstate ~ componenttype ~ powerunit =>  (powerunit, Component(id, equipmentStates.find(_.id.get == equipmentstate).get,  componentTypes.find(_.id.get == componenttype).get))
     }
   }
 
@@ -147,7 +143,7 @@ object Component {
   }
 
   def addForPowerUnit(powerunitId:Long, equipmentStateId:Long, componentTypeId:Long): Option[Long] = {
-    addForPowerUnit(powerunitId, Component(None, EquipmentState.find(equipmentStateId).get, Seq.empty, ComponentType.find(componentTypeId).get))
+    addForPowerUnit(powerunitId, Component(None, EquipmentState.find(equipmentStateId).get, ComponentType.find(componentTypeId).get))
   }
 
 
@@ -163,7 +159,7 @@ object Component {
   }
 
   def addForPowerStation(powerStationId:Long, equipmentStateId:Long, componentTypeId:Long): Option[Long] = {
-    addForPowerStation(powerStationId, Component(None, EquipmentState.find(equipmentStateId).get, Seq.empty, ComponentType.find(componentTypeId).get))
+    addForPowerStation(powerStationId, Component(None, EquipmentState.find(equipmentStateId).get, ComponentType.find(componentTypeId).get))
   }
 
 

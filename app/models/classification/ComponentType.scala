@@ -16,7 +16,6 @@ case class ComponentType(
                            id: Option[Long],
                            name: String,
                            residuallifespans:Seq[ResidualLifeSpan],
-                           repairs:Seq[Repair],
 partOfPowerStation:Boolean
                            )
 
@@ -30,7 +29,6 @@ object ComponentType {
     (__ \ "id").readNullable[Long] ~
     (__ \ "name").read[String] ~
     (__ \ "residuallifespans").read[Seq[ResidualLifeSpan]] ~
-      (__ \ "repairs").read[Seq[Repair]] ~
       (__ \ "partOfPowerStation").read[Boolean]
     )(ComponentType.apply _)
 
@@ -38,13 +36,11 @@ object ComponentType {
     (__ \ "id").writeNullable[Long] ~
       (__ \ "name").write[String]~
       (__ \ "residuallifespans").write[Seq[ResidualLifeSpan]] ~
-        (__ \ "repairs").write[Seq[Repair]]  ~
       (__ \ "partOfPowerStation").write[Boolean]
     )((componentType: ComponentType) => (
     componentType.id,
     componentType.name,
       componentType.residuallifespans,
-    componentType.repairs,
     componentType.partOfPowerStation
     ))
 
@@ -55,7 +51,7 @@ object ComponentType {
   val simple = {
     get[Option[Long]]("id") ~
       get[String]("name") ~
-      get[Boolean]("part_of_power_station") map { case id ~ name ~ part_of_power_station => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get), Repair.findWithComponentType(id.get), part_of_power_station)
+      get[Boolean]("part_of_power_station") map { case id ~ name ~ part_of_power_station => ComponentType(id, name, ResidualLifeSpan.findWithComponentType(id.get), part_of_power_station)
     }
   }
 

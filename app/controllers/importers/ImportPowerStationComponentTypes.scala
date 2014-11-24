@@ -11,7 +11,7 @@ object ImportPowerStationComponentTypes extends ImportBase {
 
     if (!ComponentType.findByName(componentTypeName).isDefined) {
 
-      ComponentType.add(ComponentType(None, componentTypeName, Seq.empty, Seq.empty, true))
+      ComponentType.add(ComponentType(None, componentTypeName, Seq.empty, true))
       println("Added new Component type with name " + componentTypeName + " to power stations")
     }
   }

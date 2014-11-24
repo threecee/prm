@@ -14,7 +14,6 @@ import scala.concurrent.ExecutionContext
 case class PowerUnit(
                              id: Option[Long],
                              referenceId:Option[String],
-                             downtimeCosts:Seq[DowntimeCost],
                              components:Seq[Component]
                              )
 
@@ -28,20 +27,17 @@ object PowerUnit {
   implicit val PowerUnitFromJson: Reads[PowerUnit] = (
     (__ \ "id").readNullable[Long] ~
       (__ \ "referenceId").readNullable[String] ~
-      (__ \ "downtimeCosts").read[Seq[DowntimeCost]]  ~
         (__ \ "components").read[Seq[Component]]
     )(PowerUnit.apply _)
 
   implicit val PowerUnitToJson: Writes[PowerUnit] = (
     (__ \ "id").writeNullable[Long] ~
       (__ \ "referenceId").writeNullable[String]~
-      (__ \ "downtimeCosts").write[Seq[DowntimeCost]]  ~
       (__ \ "components").write[Seq[Component]]
 
     )((powerUnit: PowerUnit) => (
     powerUnit.id,
     powerUnit.referenceId,
-    powerUnit.downtimeCosts,
     powerUnit.components
     ))
 
@@ -51,13 +47,18 @@ object PowerUnit {
 
   val simple = {
     get[Option[Long]]("id") ~
-      get[Option[String]]("referenceid")  map { case id  ~ referenceid  => PowerUnit(id, referenceid, DowntimeCost.findByPowerUnit(id.get), Component.findWithPowerUnit(id.get))
+      get[Option[String]]("referenceid")  map { case id  ~ referenceid  => PowerUnit(id, referenceid,  Component.findWithPowerUnit(id.get))
     }
   }
-  def simpleWithPowerStation(downtimeCosts:Seq[(Long, Seq[DowntimeCost])], components:Seq[(Long, Seq[Component])]) = {
+  def simpleFast(components:Seq[(Long, Seq[Component])]) = {
+    get[Option[Long]]("id") ~
+      get[Option[String]]("referenceid")  map { case id  ~ referenceid  => PowerUnit(id, referenceid,  findComponents(id.get, components))
+    }
+  }
+  def simpleWithPowerStation(components:Seq[(Long, Seq[Component])]) = {
     get[Option[Long]]("id") ~
       get[Long]("powerstation") ~
-      get[Option[String]]("referenceid")  map { case id  ~ powerstation ~ referenceid  => (powerstation, PowerUnit(id, referenceid, findDowntimeCost(id.get, downtimeCosts) , findComponents(id.get, components)))
+      get[Option[String]]("referenceid")  map { case id  ~ powerstation ~ referenceid  => (powerstation, PowerUnit(id, referenceid, findComponents(id.get, components)))
     }
   }
 
@@ -84,9 +85,10 @@ object PowerUnit {
 
   def findAll(): Seq[PowerUnit] = {
     DB.withConnection { implicit connection =>
-      dbMapper.makeSelectStatement(table).as(PowerUnit.simple *)
+      dbMapper.makeSelectStatement(table).as(PowerUnit.simpleFast(Component.findAllWithPowerUnit()) *)
     }
   }
+
 
   def find(id: Long): Option[PowerUnit] = {
     DB.withConnection { implicit connection =>
@@ -111,7 +113,7 @@ object PowerUnit {
 
   def findAllWithPowerStation(): Seq[(Long, Seq[PowerUnit])] = {
     DB.withConnection { implicit connection =>
-    val list:Seq[(Long, PowerUnit)] =  dbMapper.makeSelectStatement(table).as(PowerUnit.simpleWithPowerStation(DowntimeCost.findAllWithPowerUnit(), Component.findAllWithPowerUnit()) *)
+    val list:Seq[(Long, PowerUnit)] =  dbMapper.makeSelectStatement(table).as(PowerUnit.simpleWithPowerStation(Component.findAllWithPowerUnit()) *)
 
     val ids:Seq[Long] = list.map(item => item._1).distinct
     ids.map(id => (id, list.filter(_._1 == id).map(item => item._2)))
@@ -132,7 +134,7 @@ object PowerUnit {
   }
 
   def add(powerStationsId:Long, referenceId:Option[String]): Option[Long] = {
-    add(powerStationsId, PowerUnit(None, referenceId, Seq.empty, Seq.empty))
+    add(powerStationsId, PowerUnit(None, referenceId, Seq.empty))
   }
 
 

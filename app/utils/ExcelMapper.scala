@@ -24,9 +24,19 @@ class ExcelMapper(sheet:ExcelSheet) {
     if (!cell.isDefined) {
       return None
     }
-    return Option(cell.get.value.asInstanceOf[String])
+
+    return Option(cell.get.value.toString())
   }
 
+
+  def getCellAsInt(row: Int, column: Int): Option[Int] = {
+    val cell: Option[Double] = getCellAsDouble(row, column)
+    if (!cell.isDefined) {
+      return None
+    }
+
+    return Option(cell.get.toInt)
+  }
 
   def getCellAsDouble(row: Int, column: Int): Option[Double] = {
     val cell: Option[ExcelCell] = getCell(row, column)

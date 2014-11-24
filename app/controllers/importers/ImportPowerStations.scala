@@ -41,7 +41,7 @@ object ImportPowerStations   extends ImportBase
     val group: Option[Group] = Group.findByName(groupName)
 
 
-    PowerStation.update(PowerStation(station.id, station.name, station.powerUnits, station.downtimeCosts, station.components, group, region))
+    PowerStation.update(PowerStation(station.id, station.name, station.powerUnits, station.components, group, region))
     println("Updated power station : " + station.name + " with region " + regionName + " and group " + groupName)
   }
 }

@@ -33,10 +33,10 @@ object ImportPowerStationComponentStates extends ImportBase
         if (componentType.isDefined && componentType.get.partOfPowerStation) {
           val existingComponent = powerStation.components.find(_.componentType.name == name)
           if (existingComponent.isDefined) {
-            Component.updateForPowerStation(powerStation.id.get, Component(existingComponent.get.id, state,  Seq.empty,componentType.get))
+            Component.updateForPowerStation(powerStation.id.get, Component(existingComponent.get.id, state,  componentType.get))
           }
           else {
-            Component.addForPowerStation(powerStation.id.get, Component(None, state, Seq.empty, componentType.get))
+            Component.addForPowerStation(powerStation.id.get, Component(None, state, componentType.get))
           }
           println("Added Component " + name + " with state " + state.value + " to stations " + powerStation.id.get)
         }

@@ -14,7 +14,6 @@ case class PowerStation(
                          id: Option[Long],
                          name: String,
                          powerUnits:Seq[PowerUnit],
-                         downtimeCosts:Seq[DowntimeCost],
                          components:Seq[Component],
 group:Option[Group],
 region:Option[Region]
@@ -31,7 +30,6 @@ object PowerStation {
     (__ \ "id").readNullable[Long] ~
       (__ \ "name").read[String] ~
         (__ \ "powerUnits").read[Seq[PowerUnit]]  ~
-      (__ \ "downtimeCosts").read[Seq[DowntimeCost]]  ~
       (__ \ "components").read[Seq[Component]] ~
       (__ \ "group").readNullable[Group] ~
       (__ \ "region").readNullable[Region]
@@ -41,7 +39,6 @@ object PowerStation {
     (__ \ "id").writeNullable[Long] ~
       (__ \ "name").write[String] ~
       (__ \ "powerUnits").write[Seq[PowerUnit]] ~
-      (__ \ "downtimeCosts").write[Seq[DowntimeCost]]  ~
       (__ \ "components").write[Seq[Component]]  ~
       (__ \ "group").writeNullable[Group] ~
       (__ \ "region").writeNullable[Region]
@@ -49,7 +46,6 @@ object PowerStation {
     powerStation.id,
     powerStation.name,
     powerStation.powerUnits,
-    powerStation.downtimeCosts,
     powerStation.components,
     powerStation.group,
     powerStation.region
@@ -64,7 +60,7 @@ object PowerStation {
     get[Option[Long]]("id") ~
       get[String]("name") ~
       get[Option[Long]]("group_id") ~
-      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, PowerUnit.findWithPowerStation(id.get), DowntimeCost.findWithPowerStation(id.get), Component.findWithPowerStation(id.get), Group.find(group.getOrElse(-1)) ,  Region.find(region.getOrElse(-1)))
+      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, PowerUnit.findWithPowerStation(id.get),  Component.findWithPowerStation(id.get), Group.find(group.getOrElse(-1)) ,  Region.find(region.getOrElse(-1)))
     }
   }
 
@@ -72,15 +68,15 @@ object PowerStation {
     get[Option[Long]]("id") ~
       get[String]("name") ~
       get[Option[Long]]("group_id") ~
-      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, Seq.empty,  Seq.empty,  Seq.empty, None,  None)
+      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, Seq.empty,  Seq.empty,   None,  None)
     }
   }
 
-  def simpleFast(units:Seq[(Long, Seq[PowerUnit])], groups:Seq[Group], regions:Seq[Region], downtimeCosts:Seq[(Long, Seq[DowntimeCost])], components:Seq[(Long, Seq[Component])]) = {
+  def simpleFast(units:Seq[(Long, Seq[PowerUnit])], groups:Seq[Group], regions:Seq[Region], components:Seq[(Long, Seq[Component])]) = {
     get[Option[Long]]("id") ~
       get[String]("name") ~
       get[Option[Long]]("group_id") ~
-      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, findPowerUnit(id.get, units), findDowntimeCost(id.get, downtimeCosts), findComponents(id.get, components), groups.find(_.id.get == group.getOrElse(-1)), regions.find(_.id.get == region.getOrElse(-1)) )
+      get[Option[Long]]("region")  map { case id ~ name ~ group ~ region  => PowerStation(id, name, findPowerUnit(id.get, units),  findComponents(id.get, components), groups.find(_.id.get == group.getOrElse(-1)), regions.find(_.id.get == region.getOrElse(-1)) )
     }
   }
 
@@ -117,7 +113,7 @@ object PowerStation {
 
   def findAll(): Seq[PowerStation] = {
     DB.withConnection { implicit connection =>
-      dbMapper.makeSelectStatement(table).as(PowerStation.simpleFast(PowerUnit.findAllWithPowerStation(), Group.findAll(), Region.findAll(), DowntimeCost.findAllWithPowerStation(), Component.findAllWithPowerStation()) *)
+      dbMapper.makeSelectStatement(table).as(PowerStation.simpleFast(PowerUnit.findAllWithPowerStation(), Group.findAll(), Region.findAll(), Component.findAllWithPowerStation()) *)
     }
   }
   def findAllNoDeps(): Seq[PowerStation] = {
@@ -173,7 +169,7 @@ object PowerStation {
 
 
   def add(name:String): Option[Long] = {
-    add(PowerStation(None, name, Seq.empty, Seq.empty, Seq.empty, None, None))
+    add(PowerStation(None, name, Seq.empty, Seq.empty, None, None))
   }
 
   def update(eq:PowerStation): Unit = {

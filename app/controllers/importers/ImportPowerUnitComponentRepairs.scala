@@ -4,10 +4,12 @@ import java.io.File
 
 import models.classification._
 import org.apache.poi.ss.usermodel.Row
+import play.api.Logger
 import utils.{ExcelMapper, ExcelSheet, Timer, XLSXStreamReader}
-
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.collection.JavaConverters._
 import scala.collection.mutable
+import scala.concurrent.Future
 
 case class PowerUnitDataSources(componentTypes:Seq[ComponentType], incidentTypes:Seq[IncidentType], powerUnits:Seq[PowerUnit])
 
@@ -23,21 +25,21 @@ object ImportPowerUnitComponentRepairs extends ImportBase {
     val powerUnits:Seq[PowerUnit] = Timer.ptime("getPowerUnits", PowerUnit.findAll())
     
     val dataSources:PowerUnitDataSources = PowerUnitDataSources(componentTypes, incidentTypes, powerUnits)
-    excelSheets.map(sheet => processSheet(new ExcelMapper(sheet), dataSources))
+    excelSheets.map(sheet => Future { processSheet(new ExcelMapper(sheet), dataSources)})
 
   }
 
 
 
   def processSheet(sh: ExcelMapper, dataSource:PowerUnitDataSources) {
-    val paramtersOption: Option[Parameters] = Timer.ptime("processSetup", processSetup(sh, dataSource))
+    val paramtersOption: Option[Parameters] =  processSetup(sh, dataSource)
 
     if (paramtersOption.isDefined) {
       var i = 3
       while (i < sh.excelSheet.numRows) {
 
         //Future {
-        Timer.ptime("processRow", processRow(sh, i, paramtersOption.get, dataSource))
+        processRow(sh, i, paramtersOption.get, dataSource)
        // }
 
         i += 1
@@ -60,15 +62,15 @@ object ImportPowerUnitComponentRepairs extends ImportBase {
           val incidentTypeOption: Option[IncidentType] = dataSource.incidentTypes.find(_.name == incidentTypeName.getOrElse(""))
 
           if (!incidentTypeOption.isDefined) {
-            println("Incident type " + incidentTypeName + " is not defined, adding now ")
+            Logger.trace("Incident type " + incidentTypeName + " is not defined, adding now ")
             IncidentType.add(incidentTypeName.get, "")
           }
           val incidentType: IncidentType = IncidentType.findByName(incidentTypeName.get).get
           builder += Incidents(offset, incidentType)
-          println("Added incident type " + incidentType.name)
+          Logger.trace("Added incident type " + incidentType.name)
         }
         else {
-          println("No incident type defined at cell 2," + offset + " Can't import repairs")
+          Logger.trace("No incident type defined at cell 2," + offset + " Can't import repairs")
           None
         }
         offset += 3
@@ -77,7 +79,7 @@ object ImportPowerUnitComponentRepairs extends ImportBase {
         Some(Parameters(componentTypeOption.get, incidents))
       }
     else {
-      println("Component type " + componentTypeName + " is not defined. Can't import repairs")
+      Logger.trace("Component type " + componentTypeName + " is not defined. Can't import repairs")
       None
     }
   }
@@ -105,30 +107,30 @@ object ImportPowerUnitComponentRepairs extends ImportBase {
 
                 val repairOption: Option[Repair] = Timer.ptime("FindRepair",Repair.findWithComponent(componentOption.get.id.get).find(_.incidenttype.id.get == incident.incident.id.get))
                 if (repairOption.isDefined) {
-                  Timer.ptime("UpdateRepair", Repair.update(parameters.componentType.id.get, Repair(repairOption.get.id, span.get, cost.get, incident.incident, probability.get)))
-                  println("Updated repair data for " + componentOption.get.componentType.name + " at " + powerUnitId + " and incident type " + incident.incident.name + " Span: " + span.get + ", Cost: " + cost.get + ", Probability: " + probability.get * 100 + "%")
+                  Repair.update(componentOption.get.id.get, Repair(repairOption.get.id, span.get, cost.get, incident.incident, probability.get))
+                  Logger.trace("Updated repair data for " + componentOption.get.componentType.name + " at " + powerUnitId + " and incident type " + incident.incident.name + " Span: " + span.get + ", Cost: " + cost.get + ", Probability: " + probability.get * 100 + "%")
 
                 } else {
-                  Timer.ptime("AddRepair", Repair.add(parameters.componentType.id.get, Repair(None, span.get, cost.get, incident.incident, probability.get)))
-                  println("Added repair data for " + powerUnitId + " and incident type " + incident.incident.name + " Span: " + span.get + ", Cost: " + cost.get + ", Probability: " + (probability.get * 100) + "%")
+                   Repair.add(componentOption.get.id.get, Repair(None, span.get, cost.get, incident.incident, probability.get))
+                  Logger.trace("Added repair data for " + powerUnitId + " and incident type " + incident.incident.name + " Span: " + span.get + ", Cost: " + cost.get + ", Probability: " + (probability.get * 100) + "%")
 
                 }
               }
               else {
-                println("Cost is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
+                Logger.trace("Cost is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
               }
             }
             else {
-              println("Probability is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
+              Logger.trace("Probability is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
             }
           }
           else {
-            println("Span is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
+            Logger.trace("Span is not defined for " + powerUnitId + " and incident type " + incident.incident.name + ". Can't import repairs")
           }
         })
       }
       else {
-        println("Component for Component type " + parameters.componentType.name + " is not defined for power station " + powerUnitId + ", cant import repairs")
+        Logger.trace("Component for Component type " + parameters.componentType.name + " is not defined for power station " + powerUnitId + ", cant import repairs")
       }
 
     }

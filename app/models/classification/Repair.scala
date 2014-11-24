@@ -72,11 +72,7 @@ object Repair {
     }
   }
 
-  def findWithComponentType(id: Long): Seq[Repair] = {
-    DB.withConnection { implicit connection =>
-      dbMapper.makeSelectStatement(table, "componenttype" -> id).as(Repair.simple *)
-    }
-  }
+
   def findWithComponent(id: Long): Seq[Repair] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "component" -> id).as(Repair.simple *)
@@ -87,7 +83,7 @@ object Repair {
   def add(componentId:Long, eq:Repair): Option[Long] = {
     DB.withTransaction {
       implicit connection =>
-        dbMapper.makeInsertStatement(table, dbMapper.mapValues("span" -> eq.span, "cost" -> eq.cost, "incidenttype" -> eq.incidenttype.id.get, "probability" -> eq.probability, "componenttype" -> componentId))
+        dbMapper.makeInsertStatement(table, dbMapper.mapValues("span" -> eq.span, "cost" -> eq.cost, "incidenttype" -> eq.incidenttype.id.get, "probability" -> eq.probability, "component" -> componentId))
           .executeInsert() match {
           case Some(long) => Some(long.asInstanceOf[Long])
           case None       => None
@@ -98,7 +94,7 @@ object Repair {
   def add(componentId:Long, incidentId:Long, span:Double, cost:Double, probability:Double): Option[Long] = {
     DB.withTransaction {
       implicit connection =>
-        dbMapper.makeInsertStatement(table, dbMapper.mapValues("span" -> span, "cost" -> cost, "incidenttype" -> incidentId, "probability" -> probability, "componenttype" -> componentId))
+        dbMapper.makeInsertStatement(table, dbMapper.mapValues("span" -> span, "cost" -> cost, "incidenttype" -> incidentId, "probability" -> probability, "component" -> componentId))
           .executeInsert() match {
           case Some(long) => Some(long.asInstanceOf[Long])
           case None       => None
@@ -112,7 +108,7 @@ object Repair {
     DB.withTransaction {
       implicit connection =>
         if(find(eq.id.getOrElse(-1)).isDefined){
-          dbMapper.makeUpdateStatement(table, "id" -> eq.id, dbMapper.mapValues("span" -> eq.span, "cost" -> eq.cost, "incidenttype" -> eq.incidenttype.id.get, "probability" -> eq.probability, "componenttype" -> componentId))
+          dbMapper.makeUpdateStatement(table, "id" -> eq.id, dbMapper.mapValues("span" -> eq.span, "cost" -> eq.cost, "incidenttype" -> eq.incidenttype.id.get, "probability" -> eq.probability, "component" -> componentId))
             .executeUpdate()
         }
         else{

@@ -17,6 +17,7 @@ case class IncidentType(
                           )
 
 object IncidentType {
+
   private val table: String = "incidenttypes"
 
   import play.api.libs.functional.syntax._
@@ -58,6 +59,11 @@ object IncidentType {
   def find(id: Long): Option[IncidentType] = {
     DB.withConnection { implicit connection =>
       dbMapper.makeSelectStatement(table, "id" -> id).as(IncidentType.simple.singleOpt)
+    }
+  }
+  def findByName(name: String): Option[IncidentType] = {
+    DB.withConnection { implicit connection =>
+      dbMapper.makeSelectStatement(table, "name" -> name).as(IncidentType.simple.singleOpt)
     }
   }
 

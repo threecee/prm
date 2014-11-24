@@ -116,9 +116,10 @@ object Component {
     DB.withConnection { implicit connection =>
       val list:Seq[(Option[Long], Component)] =  dbMapper.makeSelectStatement(table).as(Component.simpleWithPowerStation(equipmentStates, componentTypes) *)
 
-      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
-      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+      val definedList = list.filter(_._1.isDefined)
 
+      val ids:Seq[Long] = definedList.map(item => item._1.get).distinct
+      ids.map(id => (id, definedList.filter(_._1.get == id).map(item => item._2)))
     }
   }
   def findAllWithPowerUnit(): Seq[(Long, Seq[Component])] = {
@@ -127,9 +128,10 @@ object Component {
     DB.withConnection { implicit connection =>
       val list:Seq[(Option[Long], Component)] =  dbMapper.makeSelectStatement(table).as(Component.simpleWithPowerUnit(equipmentStates, componentTypes) *)
 
-      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
-      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+      val definedList = list.filter(_._1.isDefined)
 
+      val ids:Seq[Long] = definedList.map(item => item._1.get).distinct
+      ids.map(id => (id, definedList.filter(_._1.get == id).map(item => item._2)))
     }
   }
 

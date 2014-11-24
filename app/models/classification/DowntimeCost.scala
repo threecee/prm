@@ -101,8 +101,10 @@ object DowntimeCost {
     DB.withConnection { implicit connection =>
       val list:Seq[(Option[Long], DowntimeCost)] =  dbMapper.makeSelectStatement(table).as(DowntimeCost.simpleWithPowerStation *)
 
-      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
-      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+      val definedList = list.filter(_._1.isDefined)
+
+      val ids:Seq[Long] = definedList.map(item => item._1.get).distinct
+      ids.map(id => (id, definedList.filter(_._1.get == id).map(item => item._2)))
 
     }
   }
@@ -110,8 +112,10 @@ object DowntimeCost {
     DB.withConnection { implicit connection =>
       val list:Seq[(Option[Long], DowntimeCost)] =  dbMapper.makeSelectStatement(table).as(DowntimeCost.simpleWithPowerUnit *)
 
-      val ids:Seq[Long] = list.filter(_._1.isDefined).map(item => item._1.get).distinct
-      ids.map(id => (id, list.filter(_._1.get == id).map(item => item._2)))
+      val definedList = list.filter(_._1.isDefined)
+
+      val ids:Seq[Long] = definedList.map(item => item._1.get).distinct
+      ids.map(id => (id, definedList.filter(_._1.get == id).map(item => item._2)))
 
     }
   }

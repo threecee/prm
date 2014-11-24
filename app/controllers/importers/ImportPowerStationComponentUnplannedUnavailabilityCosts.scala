@@ -20,7 +20,7 @@ object ImportPowerStationComponentUnplannedUnavailabilityCosts extends ImportBas
 
         var i: Int = startAt
 
-        while (i < stopAt) {
+        while (i <= stopAt) {
           val span: Int = getCellValueAsInt(row.getSheet.getRow(0).getCell(i, Row.CREATE_NULL_AS_BLANK))
           val value: Option[Double] = getCellValueAsNumberOption(row.getCell(i, Row.CREATE_NULL_AS_BLANK))
 

@@ -24,7 +24,7 @@ object ImportPowerUnitComponentStates extends ImportBase
 
       var i: Int = startAt
 
-      while (i < stopAt) {
+      while (i <= stopAt) {
         val name: String = getCellValueAsString(row.getSheet.getRow(0).getCell(i, Row.CREATE_NULL_AS_BLANK))
         val value: Int = getCellValueAsInt(row.getCell(i, Row.CREATE_NULL_AS_BLANK))
 

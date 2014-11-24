@@ -3,9 +3,6 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by carl c. christensen on 24/11/14.
- */
 public class ExcelSheet{
     public int index;
     public int numColumns;

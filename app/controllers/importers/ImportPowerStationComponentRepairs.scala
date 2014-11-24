@@ -6,7 +6,7 @@ import controllers.importers.ImportPowerStationComponentRepairs._
 import models.classification._
   import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
-import utils.{Timer, ExcelSheet, XLSXStreamReader}
+import utils.{ExcelMapper, Timer, ExcelSheet, XLSXStreamReader}
 
 import scala.collection.JavaConverters._
 import scala.collection.mutable
@@ -31,18 +31,18 @@ object ImportPowerStationComponentRepairs extends ImportBase {
     val componentsByPowerStation:Seq[(Long, Seq[Component])] = Timer.ptime("getComponentsForPowerStations", Component.findAllWithPowerStation())
 
     val dataSources:DataSources = DataSources(componentTypes, incidentTypes, powerStations, componentsByPowerStation)
-    excelSheets.map(sheet => processSheet(sheet, dataSources))
+    excelSheets.map(sheet => processSheet(new ExcelMapper(sheet), dataSources))
 
   }
 
 
 
-  def processSheet(sh: ExcelSheet, dataSource:DataSources) {
+  def processSheet(sh: ExcelMapper, dataSource:DataSources) {
     val paramtersOption: Option[Parameters] = Timer.ptime("processSetup", processSetup(sh, dataSource))
 
     if (paramtersOption.isDefined) {
       var i = 3
-      while (i < sh.numRows) {
+      while (i < sh.excelSheet.numRows) {
 
         //Future {
         Timer.ptime("processRow", processRow(sh, i, paramtersOption.get, dataSource))
@@ -53,30 +53,36 @@ object ImportPowerStationComponentRepairs extends ImportBase {
     }
   }
 
-  def processSetup(sh: ExcelSheet, dataSource:DataSources): Option[Parameters] = {
-    val componentTypeName: String = sh.getCellAsString(1,0)
-    val componentTypeOption: Option[ComponentType] = dataSource.componentTypes.find(_.name == componentTypeName)
+  def processSetup(sh: ExcelMapper, dataSource:DataSources): Option[Parameters] = {
+    val componentTypeName: Option[String] = sh.getCellAsString(1,0)
+
+    val componentTypeOption: Option[ComponentType] = dataSource.componentTypes.find(_.name == componentTypeName.getOrElse(""))
 
     if (componentTypeOption.isDefined) {
 
-
-      var offset:Int = 1
+      var offset: Int = 1
       val builder = Seq.newBuilder[Incidents]
-      while (sh.getCell(2, offset) != null) {
-        val incidentTypeName: String = sh.getCellAsString(0, offset)
-        val incidentTypeOption: Option[IncidentType] = dataSource.incidentTypes.find(_.name == incidentTypeName)
+      while (sh.getCell(2, offset).isDefined) {
+        val incidentTypeName: Option[String] = sh.getCellAsString(0, offset)
+        if (incidentTypeName.isDefined) {
+          val incidentTypeOption: Option[IncidentType] = dataSource.incidentTypes.find(_.name == incidentTypeName.getOrElse(""))
 
-        if (!incidentTypeOption.isDefined) {
-          println("Incident type " + incidentTypeName + " is not defined, adding now ")
-          IncidentType.add(incidentTypeName, "")
+          if (!incidentTypeOption.isDefined) {
+            println("Incident type " + incidentTypeName + " is not defined, adding now ")
+            IncidentType.add(incidentTypeName.get, "")
+          }
+          val incidentType: IncidentType = IncidentType.findByName(incidentTypeName.get).get
+          builder += Incidents(offset, incidentType)
         }
-        val incidentType: IncidentType = IncidentType.findByName(incidentTypeName).get
-        builder += Incidents(offset, incidentType)
+        else {
+          println("No incident type defined at cell 2," + offset + " Can't import repairs")
+          None
+        }
         offset += 3
       }
-      val incidents: Seq[Incidents] = builder.result()
-      Some(Parameters(componentTypeOption.get, incidents))
-    }
+        val incidents: Seq[Incidents] = builder.result()
+        Some(Parameters(componentTypeOption.get, incidents))
+      }
     else {
       println("Component type " + componentTypeName + " is not defined. Can't import repairs")
       None
@@ -85,10 +91,10 @@ object ImportPowerStationComponentRepairs extends ImportBase {
 
   def processRow(row: Row) {}
 
-    def processRow(sheet: ExcelSheet, rowIndex:Int, parameters: Parameters, dataSource:DataSources) {
-    val powerStationName: String = sheet.getCellAsString(rowIndex, 0)
+    def processRow(sheet: ExcelMapper, rowIndex:Int, parameters: Parameters, dataSource:DataSources) {
+    val powerStationName: Option[String] = sheet.getCellAsString(rowIndex, 0)
 
-      val powerStationOption:Option[PowerStation] = dataSource.powerStations.find(_.name == powerStationName)
+      val powerStationOption:Option[PowerStation] = dataSource.powerStations.find(_.name == powerStationName.getOrElse(""))
 
     if (powerStationOption.isDefined) {
       val powerStation: PowerStation = powerStationOption.get
@@ -98,11 +104,11 @@ object ImportPowerStationComponentRepairs extends ImportBase {
       val componentOption: Option[Component] = componentListOption.get._2.find(_.componentType.id.get == parameters.componentType.id.get)
       if (componentOption.isDefined) {
         parameters.incidents.map(incident => {
-          val span:Option[Double] = Option(sheet.getCellAsDoubleOption(rowIndex, incident.offset))
+          val span:Option[Double] = sheet.getCellAsDouble(rowIndex, incident.offset)
           if (span.isDefined) {
-            val probability: Option[Double] = Option(sheet.getCellAsDoubleOption(rowIndex, incident.offset + 1))
+            val probability: Option[Double] = sheet.getCellAsDouble(rowIndex, incident.offset + 1)
             if (probability.isDefined) {
-              val cost: Option[Double] = Option(sheet.getCellAsDoubleOption(rowIndex, incident.offset + 2))
+              val cost: Option[Double] = sheet.getCellAsDouble(rowIndex, incident.offset + 2)
               if (cost.isDefined) {
 
                 val repairOption: Option[Repair] = Timer.ptime("FindRepair",Repair.findWithComponent(componentOption.get.id.get).find(_.incidenttype.id.get == incident.incident.id.get))
